@@ -1,31 +1,31 @@
 /* Custom styles for Cultural Trip Database */
 
 :root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --success-color: #48bb78;
-    --warning-color: #f6ad55;
-    --danger-color: #f56565;
-    --light-bg: #f8fafc;
-    --dark-text: #2d3748;
+    --primary-color: #38bdf8;
+    --secondary-color: #2dd4bf;
+    --success-color: #34d399;
+    --warning-color: #fbbf24;
+    --danger-color: #f87171;
+    --light-bg: #f8fbff;
+    --dark-text: #1f2937;
 }
 
 body {
     color: var(--dark-text);
-    background-color: var(--light-bg);
+    background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%);
 }
 
 .gradient-bg {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
 }
 
 /* Navigation */
 nav {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
 }
 
 nav a:hover {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    text-shadow: none;
 }
 
 /* Cards */
@@ -42,15 +42,15 @@ nav a:hover {
 
 /* Buttons */
 .btn-primary {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #38bdf8 0%, #14b8a6 100%);
     color: white;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background: var(--secondary-color);
+    background: linear-gradient(135deg, #0ea5e9 0%, #0f766e 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 24px rgba(14, 165, 233, 0.2);
 }
 
 /* Forms */
@@ -65,7 +65,7 @@ nav a:hover {
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.12);
 }
 
 /* Typography */
@@ -75,13 +75,13 @@ h1, h2, h3 {
 }
 
 a {
-    color: var(--primary-color);
+    color: #0f766e;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: var(--secondary-color);
+    color: #0f172a;
 }
 
 /* Badges */
@@ -94,33 +94,34 @@ a:hover {
 }
 
 .badge-primary {
-    background: #ebf4ff;
-    color: #2c5282;
+    background: #e0f2fe;
+    color: #075985;
 }
 
 .badge-success {
-    background: #f0fff4;
-    color: #22543d;
+    background: #ecfdf5;
+    color: #166534;
 }
 
 .badge-warning {
-    background: #fffaf0;
-    color: #744210;
+    background: #fffbeb;
+    color: #92400e;
 }
 
 /* Footer */
 footer {
-    background: #1a202c;
-    color: #cbd5e0;
+    background: linear-gradient(180deg, #f8fbff 0%, #e2e8f0 100%);
+    color: #475569;
     margin-top: 4rem;
+    border-top: 1px solid #dbe4ee;
 }
 
 footer a {
-    color: #cbd5e0;
+    color: #0f766e;
 }
 
 footer a:hover {
-    color: white;
+    color: #0f172a;
 }
 
 /* Animations */
