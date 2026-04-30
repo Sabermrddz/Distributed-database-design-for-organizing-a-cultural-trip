@@ -487,6 +487,24 @@
         .hero-title {
             max-width: none;
         }
+
+        .hero-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .hero-button {
+            width: 100%;
+        }
+
+        .hero-panel__header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .network-regional-grid {
+            grid-template-columns: 1fr;
+        }
     }
 
     /* Light theme overrides */
@@ -688,8 +706,8 @@
 
     <!-- Header Overlay -->
     <header class="header-overlay w-full">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex justify-between items-center">
+        <div class="container mx-auto px-4 py-4 relative">
+            <div class="flex justify-between items-center gap-4">
                 <div class="flex items-center space-x-3">
                     <img src="{% static 'images/logo/distributed-db.svg' %}" alt="Lab2 project logo" class="h-12 w-12 rounded-2xl shadow-md ring-1 ring-white/20 object-contain">
                     <a href="{% url 'index' %}" class="text-2xl font-bold hover:text-gray-100 transition">Lab2 Project</a>
@@ -720,9 +738,34 @@
                 </div>
 
                 <!-- Mobile menu button -->
-                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                <button type="button" class="md:hidden text-white" onclick="toggleMobileMenu()" aria-controls="mobile-menu" aria-expanded="false">
                     <i class="fas fa-bars text-2xl"></i>
                 </button>
+            </div>
+
+            <div id="mobile-menu" class="mobile-menu hidden md:hidden absolute left-4 right-4 top-full mt-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-2xl backdrop-blur text-slate-800" style="max-height: calc(100vh - 5rem); overflow-y: auto;">
+                <div class="flex flex-col gap-2">
+                    <a href="{% url 'index' %}" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Home</a>
+                    <a href="{% url 'trips_list' %}" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Trips</a>
+                    <a href="{% url 'guides_list' %}" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Guides</a>
+                    <a href="{% url 'accommodations_list' %}" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Hotels</a>
+                    <a href="{% url 'events_list' %}" class="rounded-xl px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 hover:text-teal-700">Events</a>
+
+                    <div class="border-t border-slate-200 pt-2 mt-2">
+                        {% if request.session.is_admin %}
+                            <a href="{% url 'admin_dashboard' %}" class="flex items-center justify-between rounded-xl bg-teal-50 px-4 py-3 text-sm font-semibold text-teal-800 transition hover:bg-teal-100">
+                                <span><i class="fas fa-cog mr-2"></i>Admin Panel</span>
+                            </a>
+                            <a href="{% url 'admin_logout' %}" class="mt-2 flex items-center justify-between rounded-xl bg-rose-50 px-4 py-3 text-sm font-semibold text-rose-700 transition hover:bg-rose-100">
+                                <span><i class="fas fa-sign-out-alt mr-2"></i>Logout</span>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'admin_login' %}" class="flex items-center justify-between rounded-xl bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-200">
+                                <span><i class="fas fa-lock mr-2"></i>Admin</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
             </div>
         </div>
     </header>

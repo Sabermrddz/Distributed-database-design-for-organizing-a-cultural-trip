@@ -68,6 +68,12 @@
             position: relative;
             z-index: 2;
         }
+
+        @media (max-width: 768px) {
+            footer {
+                background-attachment: scroll;
+            }
+        }
     </style>
     
     {% block extra_css %}{% endblock %}
@@ -122,8 +128,10 @@
     
     <script>
         function toggleMobileMenu() {
-            const menu = document.querySelector('.md\:flex');
-            menu.classList.toggle('hidden');
+            const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
+            if (menu) {
+                menu.classList.toggle('hidden');
+            }
         }
     </script>
     

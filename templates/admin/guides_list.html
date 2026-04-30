@@ -164,34 +164,36 @@
             {% endif %}
             
             {% if guides %}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Guide ID</th>
-                            <th>Name</th>
-                            <th>Region</th>
-                            <th>Languages</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for guide in guides %}
-                        <tr>
-                            <td><strong>{{ guide.guideid }}</strong></td>
-                            <td>{{ guide.name }}</td>
-                            <td>
-                                {% if guide.region == 'North' %}
-                                    <span class="region-badge region-north">{{ guide.region }}</span>
-                                {% elif guide.region == 'South' %}
-                                    <span class="region-badge region-south">{{ guide.region }}</span>
-                                {% else %}
-                                    <span class="region-badge region-east">{{ guide.region }}</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ guide.languages|default:"-" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Guide ID</th>
+                                <th>Name</th>
+                                <th>Region</th>
+                                <th>Languages</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for guide in guides %}
+                            <tr>
+                                <td><strong>{{ guide.guideid }}</strong></td>
+                                <td>{{ guide.name }}</td>
+                                <td>
+                                    {% if guide.region == 'North' %}
+                                        <span class="region-badge region-north">{{ guide.region }}</span>
+                                    {% elif guide.region == 'South' %}
+                                        <span class="region-badge region-south">{{ guide.region }}</span>
+                                    {% else %}
+                                        <span class="region-badge region-east">{{ guide.region }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ guide.languages|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <div style="text-align: center; padding: 40px; color: #999;">
                     <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>

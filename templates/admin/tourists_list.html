@@ -151,26 +151,28 @@
             {% endif %}
             
             {% if tourists %}
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Tourist ID</th>
-                            <th>Name</th>
-                            <th>Nationality</th>
-                            <th>Contact</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for tourist in tourists %}
-                        <tr>
-                            <td><strong>{{ tourist.touristid }}</strong></td>
-                            <td>{{ tourist.name }}</td>
-                            <td>{{ tourist.nationality|default:"-" }}</td>
-                            <td>{{ tourist.contact|default:"-" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Tourist ID</th>
+                                <th>Name</th>
+                                <th>Nationality</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tourist in tourists %}
+                            <tr>
+                                <td><strong>{{ tourist.touristid }}</strong></td>
+                                <td>{{ tourist.name }}</td>
+                                <td>{{ tourist.nationality|default:"-" }}</td>
+                                <td>{{ tourist.contact|default:"-" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <div style="text-align: center; padding: 40px; color: #999;">
                     <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>

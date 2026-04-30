@@ -2,7 +2,7 @@
 
 // Toggle mobile menu
 function toggleMobileMenu() {
-    const menu = document.querySelector('.mobile-menu');
+    const menu = document.getElementById('mobile-menu') || document.querySelector('.mobile-menu');
     if (menu) {
         menu.classList.toggle('hidden');
     }
@@ -154,6 +154,15 @@ document.addEventListener('DOMContentLoaded', function() {
             item.classList.add('font-bold', 'text-white');
         }
     });
+
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenu) {
+        mobileMenu.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+    }
 });
 
 // Export functions for use

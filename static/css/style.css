@@ -15,8 +15,21 @@ body {
     background: linear-gradient(180deg, #f8fbff 0%, #ffffff 55%, #f8fbff 100%);
 }
 
+img,
+video,
+svg {
+    max-width: 100%;
+    height: auto;
+}
+
 .gradient-bg {
     background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 100%);
+}
+
+.table-scroll,
+.table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* Navigation */
@@ -148,6 +161,52 @@ footer a:hover {
     
     nav {
         padding: 1rem 0;
+    }
+
+    footer {
+        background-attachment: scroll;
+    }
+}
+
+@media (max-width: 1024px) {
+    .admin-container,
+    .admin-list-container,
+    .admin-shell {
+        grid-template-columns: 1fr !important;
+    }
+
+    .admin-sidebar,
+    .sidebar {
+        position: static !important;
+        top: auto !important;
+        width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .admin-content,
+    .admin-list-content,
+    .content {
+        padding: 20px !important;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .login-container {
+        padding: 1.25rem;
+    }
+
+    .login-box,
+    .form-box {
+        padding: 24px;
     }
 }
 

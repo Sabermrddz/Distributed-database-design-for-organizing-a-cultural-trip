@@ -28,7 +28,7 @@
         font-size: 16px;
         border-bottom: 2px solid #0f766e;
         padding-bottom: 10px;
-    }}
+    }
     
     .sidebar-menu {
         list-style: none;
@@ -228,7 +228,7 @@
         }
         
         .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr;
         }
     }
 </style>
@@ -288,38 +288,40 @@
                 <i class="fas fa-server"></i> Database Nodes Status
             </h2>
             
-            <table class="nodes-table">
-                <thead>
-                    <tr>
-                        <th>Node</th>
-                        <th>Status</th>
-                        <th>Message</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for node in nodes %}
-                    <tr>
-                        <td>
-                            <strong>{{ node.name }}</strong>
-                        </td>
-                        <td>
-                            <span class="status-badge {% if node.connected %}connected{% else %}disconnected{% endif %}">
-                                {% if node.connected %}
-                                    <i class="fas fa-check-circle"></i> Connected
-                                {% else %}
-                                    <i class="fas fa-times-circle"></i> Disconnected
-                                {% endif %}
-                            </span>
-                        </td>
-                        <td style="font-size: 12px; color: #666;">{{ node.message }}</td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="3" style="text-align: center; color: #999;">No node data available</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-scroll">
+                <table class="nodes-table">
+                    <thead>
+                        <tr>
+                            <th>Node</th>
+                            <th>Status</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for node in nodes %}
+                        <tr>
+                            <td>
+                                <strong>{{ node.name }}</strong>
+                            </td>
+                            <td>
+                                <span class="status-badge {% if node.connected %}connected{% else %}disconnected{% endif %}">
+                                    {% if node.connected %}
+                                        <i class="fas fa-check-circle"></i> Connected
+                                    {% else %}
+                                        <i class="fas fa-times-circle"></i> Disconnected
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td style="font-size: 12px; color: #666;">{{ node.message }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #999;">No node data available</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
             
             <!-- Trips by Region -->
             <h2 style="color: #333; margin: 40px 0 20px 0; font-size: 18px;">
@@ -332,7 +334,7 @@
                 <pre>{{ dashboard_sections.1.queries.0 }}</pre>
             </details>
             
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
                 {% for region_data in trips_by_region %}
                     <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #0f766e;">
                         <strong>{{ region_data.region }}</strong><br>
@@ -356,7 +358,7 @@
                 <pre>{{ dashboard_sections.2.queries.0 }}</pre>
             </details>
             
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;">
                 {% for region_data in guides_by_region %}
                     <div style="background: #E0E7FF; padding: 15px; border-radius: 8px; border-left: 4px solid #6366F1;">
                         <strong>{{ region_data.region }}</strong><br>
@@ -380,6 +382,4 @@
     }
 </style>
 {% endblock %}
-
-
 

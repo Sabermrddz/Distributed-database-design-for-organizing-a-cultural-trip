@@ -191,34 +191,36 @@
             </div>
             
             {% if trips %}
-                <table class="trips-table">
-                    <thead>
-                        <tr>
-                            <th>Trip ID</th>
-                            <th>Region</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for trip in trips %}
-                        <tr>
-                            <td><strong>{{ trip.tripid }}</strong></td>
-                            <td>
-                                {% if trip.region == 'North' %}
-                                    <span class="region-badge region-north">{{ trip.region }}</span>
-                                {% elif trip.region == 'South' %}
-                                    <span class="region-badge region-south">{{ trip.region }}</span>
-                                {% else %}
-                                    <span class="region-badge region-east">{{ trip.region }}</span>
-                                {% endif %}
-                            </td>
-                            <td>{{ trip.startdate|date:"M d, Y" }}</td>
-                            <td>{{ trip.enddate|date:"M d, Y" }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <div class="table-scroll">
+                    <table class="trips-table">
+                        <thead>
+                            <tr>
+                                <th>Trip ID</th>
+                                <th>Region</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for trip in trips %}
+                            <tr>
+                                <td><strong>{{ trip.tripid }}</strong></td>
+                                <td>
+                                    {% if trip.region == 'North' %}
+                                        <span class="region-badge region-north">{{ trip.region }}</span>
+                                    {% elif trip.region == 'South' %}
+                                        <span class="region-badge region-south">{{ trip.region }}</span>
+                                    {% else %}
+                                        <span class="region-badge region-east">{{ trip.region }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ trip.startdate|date:"M d, Y" }}</td>
+                                <td>{{ trip.enddate|date:"M d, Y" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             {% else %}
                 <div style="text-align: center; padding: 40px; color: #999;">
                     <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
