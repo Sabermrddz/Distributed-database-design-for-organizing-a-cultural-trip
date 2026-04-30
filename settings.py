@@ -21,6 +21,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-in-producti
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('true', '1', 'yes')
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,testserver').split(',')
+if not DEBUG and '.ondigitalocean.app' not in ALLOWED_HOSTS:
+    ALLOWED_HOSTS.append('.ondigitalocean.app')
 
 # Application definition
 INSTALLED_APPS = [
