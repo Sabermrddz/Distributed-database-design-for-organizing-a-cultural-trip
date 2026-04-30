@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ page_title }} - Cultural Trips Admin{% endblock %}
+{% block title %}{{ page_title }} - Lab2 Project Admin{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -34,14 +34,14 @@
     
     .list-table thead {
         background: #F3E8FF;
-        color: #8B5CF6;
+        color: #0f766e;
     }
     
     .list-table th {
         padding: 12px;
         text-align: left;
         font-weight: 600;
-        border-bottom: 2px solid #8B5CF6;
+        border-bottom: 2px solid #0f766e;
     }
     
     .list-table td {
@@ -107,20 +107,22 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4">
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4 mt-20">
     <div style="display: grid; grid-template-columns: 250px 1fr; gap: 20px; margin-top: 20px;">
         <!-- Sidebar -->
         <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px;">
-            <h3 style="color: #8B5CF6; margin-bottom: 20px; font-size: 16px; border-bottom: 2px solid #8B5CF6; padding-bottom: 10px;">
+            <h3 style="color: #0f766e; margin-bottom: 20px; font-size: 16px; border-bottom: 2px solid #0f766e; padding-bottom: 10px;">
                 <i class="fas fa-bars"></i> Navigation
             </h3>
             <ul style="list-style: none; padding: 0;">
-                <li style="margin-bottom: 8px;"><a href="{% url 'admin_dashboard' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-                <li style="margin-bottom: 8px;"><a href="{% url 'admin_itinerary' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-map-marked-alt"></i> Itinerary</a></li>
-                <li style="margin-bottom: 8px;"><a href="{% url 'admin_trips_list' %}" style="display: block; padding: 10px 12px; color: #333; background: #F3E8FF; color: #8B5CF6; border-radius: 5px; text-decoration: none; padding-left: 20px;"><i class="fas fa-suitcase"></i> Trips</a></li>
-                <li style="margin-bottom: 8px;"><a href="{% url 'admin_tourists_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-users"></i> Tourists</a></li>
-                <li style="margin-bottom: 8px;"><a href="{% url 'admin_bookings_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
-                <li style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;"><a href="{% url 'index' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-home"></i> Public Site</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_dashboard' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'; this.style.color='#0f766e'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_itinerary' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'; this.style.color='#0f766e'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-map-marked-alt"></i> Itinerary</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_trips_list' %}" style="display: block; padding: 10px 12px; color: #333; background: #f0fdf4; color: #0f766e; border-radius: 5px; text-decoration: none; padding-left: 20px;"><i class="fas fa-suitcase"></i> Trips</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_tourists_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'; this.style.color='#0f766e'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-users"></i> Tourists</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_bookings_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'; this.style.color='#0f766e'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;"><a href="{% url 'index' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#f0fdf4'; this.style.color='#0f766e'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-home"></i> Public Site</a></li>
                 <li style="margin-bottom: 8px;"><a href="{% url 'admin_logout' %}" style="display: block; padding: 10px 12px; color: #DC2626; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#FEE2E2'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.paddingLeft='12px';"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </div>

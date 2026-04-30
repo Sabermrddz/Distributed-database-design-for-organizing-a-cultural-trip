@@ -1,16 +1,649 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Cultural Trips - Home{% endblock %}
+{% block title %}Lab2 Project - Home{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        position: relative;
+        min-height: 100svh;
+        overflow: hidden;
+        background:
+            linear-gradient(135deg, rgba(4, 10, 18, 0.88) 0%, rgba(7, 24, 31, 0.76) 48%, rgba(8, 45, 49, 0.62) 100%),
+            url("{% static 'images/hero/21.jpg' %}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(circle at 20% 20%, rgba(20, 184, 166, 0.18), transparent 24%),
+            radial-gradient(circle at 80% 15%, rgba(250, 204, 21, 0.16), transparent 20%),
+            radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.12), transparent 30%);
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .header-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10;
+    }
+
+    .header-overlay a,
+    .header-overlay button {
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Database Architecture Animations */
+    @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 10px rgba(20, 184, 166, 0.5); }
+        50% { box-shadow: 0 0 30px rgba(20, 184, 166, 0.9); }
+    }
+
+    @keyframes float-up {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+    }
+
+    @keyframes draw-line {
+        0% { stroke-dashoffset: 1000; }
+        100% { stroke-dashoffset: 0; }
+    }
+
+    .db-node {
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+        border: 2px solid #10b981;
+        border-radius: 12px;
+        animation: pulse-glow 3s ease-in-out infinite;
+    }
+
+    .db-node.central {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .db-node.regional {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .db-node.website {
+        width: 110px;
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        border-color: #60a5fa;
+    }
+
+    .db-node i {
+        font-size: 2.5rem;
+        color: white;
+        animation: float-up 3s ease-in-out infinite;
+    }
+
+    .db-label {
+        font-weight: 700;
+        font-size: 0.875rem;
+        margin-top: 8px;
+        text-align: center;
+        color: white;
+    }
+
+    .connection-line {
+        stroke: #14b8a6;
+        stroke-width: 2;
+        stroke-dasharray: 10,5;
+        animation: draw-line 2s ease-in-out forwards;
+    }
+
+    .db-status {
+        position: absolute;
+        top: 88px;
+        right: 24px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 0.8rem 1.1rem;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 20;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(16px);
+        letter-spacing: 0.03em;
+        text-transform: uppercase;
+    }
+
+    .db-status span {
+        width: 10px;
+        height: 10px;
+        background: #ffffff;
+        border-radius: 50%;
+        animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+
+    @keyframes pulse-dot {
+        0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.5); }
+        70% { box-shadow: 0 0 0 12px rgba(52, 211, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+    }
+
+    .architectures-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: white;
+        text-align: center;
+        margin-bottom: 40px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .architecture-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 60px;
+    }
+
+    .layer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        position: relative;
+        width: 100%;
+    }
+
+    .layer-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+        position: absolute;
+        left: 0;
+        top: -25px;
+    }
+
+    .regional-layer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .db-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .hero-shell {
+        position: relative;
+        z-index: 2;
+        min-height: 100svh;
+        display: flex;
+        align-items: center;
+        padding-top: 6.5rem;
+        padding-bottom: 3rem;
+    }
+
+    .hero-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.55rem 1rem;
+        border-radius: 999px;
+        background: rgba(20, 184, 166, 0.14);
+        border: 1px solid rgba(45, 212, 191, 0.24);
+        color: #99f6e4;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        margin-top: 1.25rem;
+        max-width: 12ch;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(3rem, 7vw, 5.8rem);
+        line-height: 0.94;
+        letter-spacing: -0.04em;
+        color: #f8fafc;
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        text-wrap: balance;
+    }
+
+    .hero-lead {
+        margin-top: 1.5rem;
+        max-width: 38rem;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: rgba(241, 245, 249, 0.9);
+        text-wrap: balance;
+    }
+
+    .hero-actions {
+        margin-top: 2rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+    }
+
+    .hero-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0.95rem 1.35rem;
+        border-radius: 999px;
+        font-weight: 700;
+        transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-button:hover {
+        transform: translateY(-2px);
+    }
+
+    .hero-button--primary {
+        background: linear-gradient(135deg, #f8fafc 0%, #d1fae5 100%);
+        color: #0f172a;
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.25);
+    }
+
+    .hero-button--secondary {
+        background: rgba(15, 23, 42, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #f8fafc;
+    }
+
+    .hero-stats {
+        margin-top: 2.25rem;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+        max-width: 38rem;
+    }
+
+    .hero-stat {
+        padding: 0.95rem 1rem;
+        border-radius: 1.1rem;
+        background: rgba(15, 23, 42, 0.38);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(14px);
+    }
+
+    .hero-stat strong {
+        display: block;
+        font-size: 1.05rem;
+        color: #f8fafc;
+    }
+
+    .hero-stat span {
+        display: block;
+        margin-top: 0.3rem;
+        font-size: 0.8rem;
+        color: rgba(226, 232, 240, 0.8);
+    }
+
+    .hero-panel {
+        background: rgba(8, 15, 27, 0.52);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 2rem;
+        padding: 1.5rem;
+        box-shadow: 0 25px 80px rgba(2, 6, 23, 0.45);
+        backdrop-filter: blur(20px);
+    }
+
+    .hero-panel__header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .hero-panel__eyebrow {
+        font-size: 0.78rem;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        color: #99f6e4;
+        font-weight: 800;
+    }
+
+    .hero-panel__badge {
+        white-space: nowrap;
+        padding: 0.5rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(20, 184, 166, 0.16);
+        border: 1px solid rgba(45, 212, 191, 0.24);
+        color: #ccfbf1;
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .network-diagram {
+        margin-top: 1.5rem;
+        display: grid;
+        gap: 1rem;
+    }
+
+    .network-step {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .network-node {
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 1.2rem;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: linear-gradient(135deg, rgba(20, 184, 166, 0.92) 0%, rgba(13, 148, 136, 0.8) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(15, 118, 110, 0.35);
+        animation: float-node 5s ease-in-out infinite;
+    }
+
+    .network-node i {
+        font-size: 2rem;
+        color: white;
+    }
+
+    .network-node--website {
+        width: 4.2rem;
+        height: 4.2rem;
+    }
+
+    .network-node--central {
+        width: 5rem;
+        height: 5rem;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(29, 78, 216, 0.82) 100%);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 10px 30px rgba(29, 78, 216, 0.3);
+    }
+
+    .network-label {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .network-label span {
+        font-weight: 700;
+        color: #f8fafc;
+    }
+
+    .network-label small {
+        margin-top: 0.15rem;
+        color: rgba(226, 232, 240, 0.72);
+    }
+
+    .network-connector {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: rgba(226, 232, 240, 0.78);
+        font-size: 0.82rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+    }
+
+    .network-connector::before,
+    .network-connector::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.85), transparent);
+    }
+
+    .network-connector i {
+        color: #99f6e4;
+    }
+
+    .network-regional-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.8rem;
+    }
+
+    .regional-card {
+        padding: 0.95rem 0.85rem;
+        border-radius: 1.1rem;
+        background: rgba(15, 23, 42, 0.42);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        text-align: center;
+    }
+
+    .regional-card i {
+        display: block;
+        margin-bottom: 0.65rem;
+        font-size: 1.25rem;
+        color: #99f6e4;
+    }
+
+    .regional-card strong {
+        display: block;
+        color: #f8fafc;
+        font-size: 0.98rem;
+    }
+
+    .regional-card small {
+        display: block;
+        margin-top: 0.22rem;
+        color: rgba(226, 232, 240, 0.72);
+    }
+
+    .hero-panel__note {
+        margin-top: 1.25rem;
+        color: rgba(226, 232, 240, 0.85);
+        line-height: 1.7;
+    }
+
+    @keyframes float-node {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-6px); }
+    }
+
+    @media (min-width: 640px) {
+        .hero-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .hero-section {
+            background-attachment: scroll;
+        }
+
+        .db-status {
+            position: static;
+            margin: 5.5rem auto 0;
+            width: fit-content;
+        }
+
+        .hero-shell {
+            padding-top: 4.75rem;
+        }
+
+        .hero-title {
+            max-width: none;
+        }
+    }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="gradient-bg text-white py-20">
-    <div class="container mx-auto px-4 text-center">
-        <h1 class="text-5xl font-bold mb-6">Discover Authentic Cultural Experiences</h1>
-        <p class="text-xl mb-8 max-w-2xl mx-auto">Explore the rich heritage and traditions of North, South, and East regions with our carefully curated trips.</p>
-        <a href="{% url 'trips_list' %}" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition inline-block">
-            <i class="fas fa-search mr-2"></i>Explore Trips
-        </a>
+<section class="hero-section relative text-white">
+    <!-- Database Live Status -->
+    <div class="db-status">
+        <span></span>
+        Database is Live
+    </div>
+
+    <!-- Header Overlay -->
+    <header class="header-overlay w-full">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <img src="{% static 'images/logo/distributed-db.svg' %}" alt="Distributed database logo" class="h-12 w-12 object-cover shadow-md">
+                    <a href="{% url 'index' %}" class="text-2xl font-bold hover:text-gray-100 transition">Lab2 Project</a>
+                </div>
+
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="{% url 'index' %}" class="hover:text-gray-200 transition">Home</a>
+                    <a href="{% url 'trips_list' %}" class="hover:text-gray-200 transition">Trips</a>
+                    <a href="{% url 'guides_list' %}" class="hover:text-gray-200 transition">Guides</a>
+                    <a href="{% url 'accommodations_list' %}" class="hover:text-gray-200 transition">Hotels</a>
+                    <a href="{% url 'events_list' %}" class="hover:text-gray-200 transition">Events</a>
+
+                    <!-- Admin Links -->
+                    {% if request.session.is_admin %}
+                        <div class="border-l border-white pl-6 ml-6">
+                            <a href="{% url 'admin_dashboard' %}" class="bg-teal-500 text-white px-3 py-2 rounded hover:bg-teal-600 transition">
+                                <i class="fas fa-cog mr-2"></i>Admin Panel
+                            </a>
+                            <a href="{% url 'admin_logout' %}" class="text-red-300 hover:text-red-100 ml-2 transition">
+                                <i class="fas fa-sign-out-alt"></i>Logout
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'admin_login' %}" class="bg-gray-700 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 transition">
+                            <i class="fas fa-lock mr-1"></i>Admin
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-shell">
+        <div class="container mx-auto px-4 w-full">
+            <div class="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+                <div class="relative z-10">
+                    <div class="hero-eyebrow">Cultural Trip Database</div>
+                    <h1 class="hero-title">Map every journey with one connected database.</h1>
+                    <p class="hero-lead">
+                        The vintage map background sets the travel mood while Oracle XE keeps trips,
+                        guides, hotels, and events synchronized across North, South, and East.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="{% url 'trips_list' %}" class="hero-button hero-button--primary">
+                            Browse Trips <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="{% url 'guides_list' %}" class="hero-button hero-button--secondary">
+                            Meet Guides <i class="fas fa-map-pin"></i>
+                        </a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <strong>3 Regions</strong>
+                            <span>North, South, East</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Live Sync</strong>
+                            <span>DB links active</span>
+                        </div>
+                        <div class="hero-stat">
+                            <strong>Oracle XE</strong>
+                            <span>Central node hub</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="hero-panel">
+                        <div class="hero-panel__header">
+                            <div>
+                                <p class="hero-panel__eyebrow">Network View</p>
+                                <h2 class="text-2xl font-semibold text-white">Distributed Architecture</h2>
+                            </div>
+                            <div class="hero-panel__badge">Oracle XE</div>
+                        </div>
+
+                        <div class="network-diagram">
+                            <div class="network-step">
+                                <div class="network-node network-node--website">
+                                    <i class="fas fa-globe"></i>
+                                </div>
+                                <div class="network-label">
+                                    <span>Website</span>
+                                    <small>Entry layer</small>
+                                </div>
+                            </div>
+
+                            <div class="network-connector">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>Secure sync</span>
+                            </div>
+
+                            <div class="network-step">
+                                <div class="network-node network-node--central">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div class="network-label">
+                                    <span>Central Node</span>
+                                    <small>Oracle XE hub</small>
+                                </div>
+                            </div>
+
+                            <div class="network-connector">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>DB links</span>
+                            </div>
+
+                            <div class="network-regional-grid">
+                                <div class="regional-card">
+                                    <i class="fas fa-mountain"></i>
+                                    <strong>North</strong>
+                                    <small>Regional data</small>
+                                </div>
+                                <div class="regional-card">
+                                    <i class="fas fa-sun"></i>
+                                    <strong>South</strong>
+                                    <small>Regional data</small>
+                                </div>
+                                <div class="regional-card">
+                                    <i class="fas fa-leaf"></i>
+                                    <strong>East</strong>
+                                    <small>Regional data</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="hero-panel__note">
+                            One system keeps every destination, booking, and local detail in sync.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -24,13 +657,13 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             {% for trip in trips|slice:":6" %}
             <div class="trip-card bg-white rounded-lg shadow-md overflow-hidden">
-                <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-48 flex items-center justify-center">
+                <div class="bg-gradient-to-r from-blue-500 to-teal-600 h-48 flex items-center justify-center">
                     <i class="fas fa-mountain text-white text-6xl"></i>
                 </div>
                 
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-2">
-                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">{{ trip.region }}</span>
+                        <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm font-semibold">{{ trip.region }}</span>
                         <span class="text-gray-600 text-sm"><i class="fas fa-calendar mr-1"></i>{{ trip.startdate|date:'M d' }}</span>
                     </div>
                     
@@ -41,7 +674,7 @@
                         <span class="text-gray-600 text-sm">
                             <i class="fas fa-clock mr-1"></i>10 days
                         </span>
-                        <a href="{% url 'trip_detail' trip.tripid %}" class="text-purple-600 font-semibold hover:text-purple-800 transition">
+                        <a href="{% url 'trip_detail' trip.tripid %}" class="text-teal-600 font-semibold hover:text-teal-800 transition">
                             View Details <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
@@ -56,7 +689,7 @@
         {% endif %}
         
         <div class="text-center mt-12">
-            <a href="{% url 'trips_list' %}" class="bg-purple-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-purple-700 transition inline-block">
+            <a href="{% url 'trips_list' %}" class="bg-teal-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-teal-700 transition inline-block">
                 View All Trips
             </a>
         </div>

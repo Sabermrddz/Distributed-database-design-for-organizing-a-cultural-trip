@@ -3,7 +3,9 @@
 {% block title %}Dashboard - Cultural Trip Database{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-12">
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4 py-12 mt-20">
     <div class="mb-8">
         <h1 class="text-4xl font-bold mb-4">Admin Dashboard</h1>
         <p class="text-gray-600">Overview of system statistics and key metrics.</p>
@@ -50,9 +52,9 @@
             <div class="flex items-center justify-between">
                 <div>
                     <p class="text-gray-600 text-sm font-semibold mb-2">Active Regions</p>
-                    <p class="text-4xl font-bold text-purple-600">3</p>
+                    <p class="text-4xl font-bold text-teal-600">3</p>
                 </div>
-                <div class="bg-purple-100 rounded-full p-4 text-purple-600 text-2xl">
+                <div class="bg-teal-100 rounded-full p-4 text-teal-600 text-2xl">
                     <i class="fas fa-globe"></i>
                 </div>
             </div>
@@ -85,10 +87,10 @@
                 <div>
                     <div class="flex justify-between mb-2">
                         <span class="font-semibold">{{ region_data.region }}</span>
-                        <span class="text-purple-600 font-bold">{{ region_data.cnt }} trips</span>
+                        <span class="text-teal-600 font-bold">{{ region_data.cnt }} trips</span>
                     </div>
                     <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div class="bg-purple-600 h-2 rounded-full" style="width: {% widthratio region_data.cnt 10 100 %}%"></div>
+                        <div class="bg-teal-600 h-2 rounded-full" style="width: {% widthratio region_data.cnt 10 100 %}%"></div>
                     </div>
                 </div>
                 {% endfor %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Admin Dashboard - Cultural Trips{% endblock %}
+{% block title %}Admin Dashboard - Lab2 Project{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -23,12 +23,12 @@
     }
     
     .admin-sidebar h3 {
-        color: #8B5CF6;
+        color: #0f766e;
         margin-bottom: 20px;
         font-size: 16px;
-        border-bottom: 2px solid #8B5CF6;
+        border-bottom: 2px solid #0f766e;
         padding-bottom: 10px;
-    }
+    }}
     
     .sidebar-menu {
         list-style: none;
@@ -50,8 +50,8 @@
     }
     
     .sidebar-menu a:hover {
-        background: #F3E8FF;
-        color: #8B5CF6;
+        background: #f0fdf4;
+        color: #0f766e;
         padding-left: 20px;
     }
     
@@ -65,7 +65,7 @@
     .admin-content h1 {
         color: #333;
         margin-bottom: 30px;
-        border-bottom: 2px solid #8B5CF6;
+        border-bottom: 2px solid #0f766e;
         padding-bottom: 10px;
     }
     
@@ -77,7 +77,7 @@
     }
     
     .stat-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
         color: white;
         padding: 20px;
         border-radius: 10px;
@@ -185,15 +185,15 @@
     }
     
     .nodes-table thead {
-        background: #F3E8FF;
-        color: #8B5CF6;
+        background: #f0fdf4;
+        color: #0f766e;
     }
     
     .nodes-table th {
         padding: 12px;
         text-align: left;
         font-weight: 600;
-        border-bottom: 2px solid #8B5CF6;
+        border-bottom: 2px solid #0f766e;
     }
     
     .nodes-table td {
@@ -235,7 +235,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4">
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4 mt-20">
     <div class="admin-container">
         <!-- Sidebar -->
         <div class="admin-sidebar">
@@ -332,9 +334,9 @@
             
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
                 {% for region_data in trips_by_region %}
-                    <div style="background: #F3E8FF; padding: 15px; border-radius: 8px; border-left: 4px solid #8B5CF6;">
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border-left: 4px solid #0f766e;">
                         <strong>{{ region_data.region }}</strong><br>
-                        <span style="font-size: 24px; color: #8B5CF6;">{{ region_data.cnt }}</span> trips
+                        <span style="font-size: 24px; color: #0f766e;">{{ region_data.cnt }}</span> trips
                     </div>
                 {% empty %}
                     <div style="grid-column: 1/-1; text-align: center; color: #999; padding: 20px;">

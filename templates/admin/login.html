@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Admin Login - Cultural Trips{% endblock %}
+{% block title %}Admin Login - Lab2 Project{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -9,7 +9,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
     }
     
     .login-box {
@@ -22,7 +22,7 @@
     }
     
     .login-box h2 {
-        color: #8B5CF6;
+        color: #0f766e;
         margin-bottom: 30px;
         text-align: center;
         font-size: 24px;
@@ -50,14 +50,14 @@
     
     .form-group input:focus {
         outline: none;
-        border-color: #8B5CF6;
+        border-color: #0f766e;
         box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
     }
     
     .btn-login {
         width: 100%;
         padding: 12px;
-        background: #8B5CF6;
+        background: #0f766e;
         color: white;
         border: none;
         border-radius: 5px;
@@ -68,7 +68,7 @@
     }
     
     .btn-login:hover {
-        background: #7C3AED;
+        background: #0f766e;
     }
     
     .error-message {
@@ -134,7 +134,7 @@
         </form>
         
         <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'index' %}" style="color: #8B5CF6; text-decoration: none;">
+            <a href="{% url 'index' %}" style="color: #0f766e; text-decoration: none;">
                 <i class="fas fa-arrow-left"></i> Back to Home
             </a>
         </div>

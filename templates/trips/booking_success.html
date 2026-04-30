@@ -3,7 +3,9 @@
 {% block title %}Booking Confirmed - Cultural Trip Database{% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4 py-12">
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4 py-12 mt-20">
     <div class="max-w-2xl mx-auto text-center">
         <!-- Success Icon -->
         <div class="mb-8">
@@ -75,26 +77,26 @@
         </div>
         
         <!-- Contact Info -->
-        <div class="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
-            <h3 class="font-semibold text-purple-900 mb-3">
+        <div class="bg-teal-50 border border-teal-200 rounded-lg p-6 mb-8">
+            <h3 class="font-semibold text-teal-900 mb-3">
                 <i class="fas fa-headset mr-2"></i>Need Help?
             </h3>
-            <p class="text-purple-800 mb-2">If you have any questions about your booking, please don't hesitate to contact us.</p>
+            <p class="text-teal-800 mb-2">If you have any questions about your booking, please don't hesitate to contact us.</p>
             <div class="flex flex-col md:flex-row gap-4 justify-center mt-4">
                 <div>
                     <p class="text-sm text-gray-600">Email:</p>
-                    <p class="font-semibold text-purple-900">booking@culturaltrips.com</p>
+                    <p class="font-semibold text-teal-900">booking@culturaltrips.com</p>
                 </div>
                 <div>
                     <p class="text-sm text-gray-600">Phone:</p>
-                    <p class="font-semibold text-purple-900">+213 XX XXX XXXX</p>
+                    <p class="font-semibold text-teal-900">+213 XX XXX XXXX</p>
                 </div>
             </div>
         </div>
         
         <!-- Action Buttons -->
         <div class="flex flex-col md:flex-row gap-4 justify-center">
-            <a href="{% url 'index' %}" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition font-semibold inline-block">
+            <a href="{% url 'index' %}" class="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition font-semibold inline-block">
                 <i class="fas fa-home mr-2"></i>Back to Home
             </a>
             <a href="{% url 'trips_list' %}" class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition font-semibold inline-block">

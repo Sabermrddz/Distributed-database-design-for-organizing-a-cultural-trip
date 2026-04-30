@@ -1,0 +1,42 @@
+{% load static %}
+<!-- Navigation Header with Teal Background -->
+<header class="text-white fixed w-full top-0 z-50 shadow-lg" style="background: linear-gradient(135deg, rgba(15, 118, 110, 0.95) 0%, rgba(20, 184, 166, 0.95) 100%);">
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <img src="{% static 'images/logo/distributed-db.svg' %}" alt="Distributed database logo" class="h-12 w-12 object-cover shadow-md">
+                <a href="{% url 'index' %}" class="text-2xl font-bold hover:text-gray-100 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Lab2 Project</a>
+            </div>
+            
+            <div class="hidden md:flex space-x-6 items-center">
+                <a href="{% url 'index' %}" class="hover:text-gray-200 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Home</a>
+                <a href="{% url 'trips_list' %}" class="hover:text-gray-200 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Trips</a>
+                <a href="{% url 'guides_list' %}" class="hover:text-gray-200 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Guides</a>
+                <a href="{% url 'accommodations_list' %}" class="hover:text-gray-200 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Hotels</a>
+                <a href="{% url 'events_list' %}" class="hover:text-gray-200 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">Events</a>
+                
+                <!-- Admin Links -->
+                {% if request.session.is_admin %}
+                    <div class="border-l border-white pl-6 ml-6">
+                        <a href="{% url 'admin_dashboard' %}" class="bg-teal-500 text-white px-3 py-2 rounded hover:bg-teal-600 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+                            <i class="fas fa-cog mr-2"></i>Admin Panel
+                        </a>
+                        <a href="{% url 'admin_logout' %}" class="text-red-300 hover:text-red-100 ml-2 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+                            <i class="fas fa-sign-out-alt"></i>Logout
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'admin_login' %}" class="bg-gray-700 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 transition" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+                        <i class="fas fa-lock mr-1"></i>Admin
+                    </a>
+                {% endif %}
+            </div>
+            
+            <!-- Mobile menu button -->
+            <button class="md:hidden text-white" onclick="toggleMobileMenu()" style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </div>
+</header>
+

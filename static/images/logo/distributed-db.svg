@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Distributed database logo">
+  <defs>
+    <linearGradient id="dbGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="1" stop-color="#14b8a6"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="24" fill="#f1f5f9"/>
+  <g fill="url(#dbGradient)">
+    <ellipse cx="64" cy="34" rx="30" ry="12"/>
+    <rect x="34" y="34" width="60" height="32"/>
+    <ellipse cx="64" cy="66" rx="30" ry="12"/>
+  </g>
+  <g fill="#0f172a">
+    <circle cx="20" cy="28" r="6"/>
+    <circle cx="108" cy="28" r="6"/>
+    <circle cx="20" cy="100" r="6"/>
+    <circle cx="108" cy="100" r="6"/>
+  </g>
+  <g stroke="#0f172a" stroke-width="3" stroke-linecap="round">
+    <line x1="26" y1="28" x2="40" y2="40"/>
+    <line x1="102" y1="28" x2="88" y2="40"/>
+    <line x1="26" y1="100" x2="40" y2="88"/>
+    <line x1="102" y1="100" x2="88" y2="88"/>
+  </g>
+</svg>

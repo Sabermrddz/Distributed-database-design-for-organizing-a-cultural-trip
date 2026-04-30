@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ title }} - Cultural Trips Admin{% endblock %}
+{% block title %}{{ title }} - Lab2 Project Admin{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -17,7 +17,7 @@
     }
     
     .form-box h1 {
-        color: #8B5CF6;
+        color: #0f766e;
         margin-bottom: 30px;
         font-size: 24px;
     }
@@ -51,7 +51,7 @@
     .form-box select:focus,
     .form-box textarea:focus {
         outline: none;
-        border-color: #8B5CF6;
+        border-color: #0f766e;
         box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
     }
     
@@ -80,12 +80,12 @@
     }
     
     .btn-submit {
-        background: #8B5CF6;
+        background: #0f766e;
         color: white;
     }
     
     .btn-submit:hover {
-        background: #7C3AED;
+        background: #0f766e;
     }
     
     .btn-cancel {
@@ -106,7 +106,9 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-4">
+{% include 'partials/navbar.html' %}
+
+<div class="container mx-auto px-4 mt-20">
     <div class="form-page">
         <div class="form-box">
             <h1>
