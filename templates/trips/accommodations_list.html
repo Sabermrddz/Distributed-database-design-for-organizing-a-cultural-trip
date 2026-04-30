@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+
+{% block title %}Accommodations - Cultural Trip Database{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes scaleHover {
+        from {
+            transform: scale(1);
+        }
+        to {
+            transform: scale(1.02);
+        }
+    }
+
+    .accommodation-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .accommodation-card:nth-child(1) { animation-delay: 0.1s; }
+    .accommodation-card:nth-child(2) { animation-delay: 0.2s; }
+    .accommodation-card:nth-child(3) { animation-delay: 0.3s; }
+    .accommodation-card:nth-child(4) { animation-delay: 0.4s; }
+    .accommodation-card:nth-child(5) { animation-delay: 0.5s; }
+    .accommodation-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .accommodation-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .accommodation-card:hover {
+        box-shadow: 0 16px 35px rgba(59, 130, 246, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .accommodation-header {
+        background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .accommodation-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
+
+    .accommodation-header i {
+        font-size: 3.5rem;
+        color: white;
+        z-index: 2;
+        transition: transform 0.3s ease;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .accommodation-card:hover .accommodation-header i {
+        transform: scale(1.1) rotateY(5deg);
+    }
+
+    .accommodation-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .accommodation-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .accommodation-card:hover .accommodation-title {
+        color: #3b82f6;
+    }
+
+    .accommodation-header-info {
+        display: flex;
+        items-align: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(59, 130, 246, 0.1);
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .region-badge {
+        background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+        color: #1e40af;
+        padding: 0.6rem 1.2rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: 1px solid #93c5fd;
+        white-space: nowrap;
+    }
+
+    .region-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+    }
+
+    .rating-stars {
+        display: flex;
+        gap: 0.25rem;
+        transition: transform 0.3s ease;
+    }
+
+    .accommodation-card:hover .rating-stars {
+        transform: scale(1.1);
+    }
+
+    .star-filled {
+        color: #fbbf24;
+        transition: transform 0.2s ease;
+    }
+
+    .star-filled:hover {
+        transform: scale(1.2);
+    }
+
+    .star-empty {
+        color: #d1d5db;
+    }
+
+    .hotel-details {
+        space-y: 1rem;
+        font-size: 0.875rem;
+        color: #4b5563;
+        flex-grow: 1;
+        margin-bottom: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        align-items: center;
+        padding: 0.75rem 0;
+        transition: all 0.2s ease;
+        line-height: 1.6;
+    }
+
+    .detail-item:hover {
+        color: #3b82f6;
+        transform: translateX(4px);
+    }
+
+    .detail-item i {
+        margin-right: 0.75rem;
+        min-width: 20px;
+        color: #3b82f6;
+        transition: transform 0.2s ease;
+    }
+
+    .detail-item:hover i {
+        transform: scale(1.2);
+    }
+
+    .hotel-id-badge {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        color: white;
+        font-weight: bold;
+        font-size: 0.875rem;
+        padding: 0.6rem 1.2rem;
+        border-radius: 6px;
+        display: inline-block;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .hotel-id-badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Accommodations</h1>
+        <p class="text-gray-600">Browse our carefully selected hotels and lodges in each region.</p>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Filter Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <form method="get" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-sm font-semibold mb-2">Filter by Region</label>
+                <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <option value="">All Regions</option>
+                    <option value="North" {% if selected_region == 'North' %}selected{% endif %}>North</option>
+                    <option value="South" {% if selected_region == 'South' %}selected{% endif %}>South</option>
+                    <option value="East" {% if selected_region == 'East' %}selected{% endif %}>East</option>
+                </select>
+            </div>
+            <div class="flex gap-2 items-end">
+                <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+                {% if selected_region %}
+                <a href="{% url 'accommodations_list' %}" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-times mr-2"></i>Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+    
+    <!-- Accommodations Grid -->
+    {% if accommodations %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="accommodations-container">
+        {% for hotel in accommodations %}
+        <div class="accommodation-card">
+            <!-- Header with Icon -->
+            <div class="accommodation-header">
+                <i class="fas fa-hotel" aria-label="Hotel"></i>
+            </div>
+            
+            <!-- Content -->
+            <div class="accommodation-content">
+                <!-- Region and Rating -->
+                <div class="accommodation-header-info">
+                    <span class="region-badge">
+                        <i class="fas fa-map-marker-alt mr-1"></i>{{ hotel.region }}
+                    </span>
+                    <span class="rating-stars">
+                        {% for i in "x"|rjust:"5" %}
+                            {% if forloop.counter <= hotel.rating %}
+                                <i class="fas fa-star star-filled"></i>
+                            {% else %}
+                                <i class="far fa-star star-empty"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                </div>
+                
+                <!-- Hotel Name -->
+                <h3 class="accommodation-title">{{ hotel.name }}</h3>
+                
+                <!-- Hotel Details -->
+                <div class="hotel-details">
+                    <div class="detail-item">
+                        <i class="fas fa-building"></i>
+                        <span><strong>Hotel ID:</strong> {{ hotel.hotelid }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <i class="fas fa-star"></i>
+                        <span><strong>Rating:</strong> {{ hotel.rating|floatformat:1 }}/5.0</span>
+                    </div>
+                </div>
+
+                <!-- Hotel ID Badge -->
+                <div class="mt-auto pt-2 border-t border-gray-100">
+                    <span class="hotel-id-badge">
+                        <i class="fas fa-hashtag"></i> {{ hotel.hotelid }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">No Accommodations Found</h3>
+        <p class="text-gray-600 mb-6">There are no accommodations available for your selected criteria.</p>
+        <a href="{% url 'accommodations_list' %}" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition inline-block">
+            View All Accommodations
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // List of hotel images
+    const hotelImages = [
+        '/static/images/hotels/brett-campbell-k1OlQaEK2qI-unsplash.jpg',
+        '/static/images/hotels/ciudad-maderas-MXbM1NrRqtI-unsplash.jpg',
+        '/static/images/hotels/sara-dubler-Koei_7yYtIo-unsplash.jpg',
+        '/static/images/hotels/sidath-vimukthi-xZKEqleFdnk-unsplash.jpg',
+        '/static/images/hotels/the-anam-_twiIcIsp2s-unsplash.jpg',
+        '/static/images/hotels/valeriia-bugaiova-_pPHgeHz1uk-unsplash.jpg'
+    ];
+
+    // Get random image from array
+    function getRandomImage() {
+        return hotelImages[Math.floor(Math.random() * hotelImages.length)];
+    }
+
+    // Add smooth interactions
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.accommodation-card');
+        
+        cards.forEach(card => {
+            // Set random background image to header
+            const header = card.querySelector('.accommodation-header');
+            if (header) {
+                header.style.backgroundImage = `url('${getRandomImage()}')`;
+            }
+
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.01)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

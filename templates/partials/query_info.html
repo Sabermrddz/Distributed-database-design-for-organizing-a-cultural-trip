@@ -1,0 +1,27 @@
+{% if query_info %}
+<div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6 mb-8">
+    <div class="flex items-start justify-between gap-4 mb-4">
+        <div>
+            <h3 class="text-xl font-bold text-gray-900">{{ query_info.title }}</h3>
+            <p class="text-sm text-gray-600 mt-1">{{ query_info.note }}</p>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if query_info.fallback %}bg-amber-100 text-amber-800{% else %}bg-emerald-100 text-emerald-800{% endif %}">
+            {% if query_info.fallback %}Sample Fallback{% else %}Live Oracle{% endif %}
+        </span>
+    </div>
+
+    <details class="group">
+        <summary class="cursor-pointer text-sm font-semibold text-purple-700 hover:text-purple-900">
+            Show executed query code
+        </summary>
+        <div class="mt-4 space-y-4">
+            {% for query in query_info.queries %}
+            <div>
+                <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query {{ forloop.counter }}</div>
+                <pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">{{ query }}</pre>
+            </div>
+            {% endfor %}
+        </div>
+    </details>
+</div>
+{% endif %}

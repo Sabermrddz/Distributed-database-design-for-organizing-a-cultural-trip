@@ -1,0 +1,392 @@
+{% extends 'base.html' %}
+
+{% block title %}Itinerary - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-shell {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .sidebar {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+    }
+
+    .sidebar h3 {
+        color: #8B5CF6;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-bottom: 2px solid #8B5CF6;
+        padding-bottom: 10px;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+
+    .sidebar-menu li {
+        margin-bottom: 8px;
+    }
+
+    .sidebar-menu a {
+        display: block;
+        padding: 10px 12px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+
+    .sidebar-menu a.active,
+    .sidebar-menu a:hover {
+        background: #F3E8FF;
+        color: #8B5CF6;
+        padding-left: 20px;
+    }
+
+    .content {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .readonly-note {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border-left: 4px solid #2563EB;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+
+    .panel {
+        background: #F9FAFB;
+        border: 1px solid #E5E7EB;
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 24px;
+    }
+
+    .region-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .region-north { background: #2563EB; }
+    .region-south { background: #F97316; }
+    .region-east { background: #16A34A; }
+
+    .field {
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid #D1D5DB;
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field:focus {
+        border-color: #8B5CF6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.12);
+    }
+
+    .btn-primary {
+        background: #8B5CF6;
+        color: white;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+        background: #7C3AED;
+    }
+
+    .result-card {
+        border-radius: 18px;
+        padding: 24px;
+        color: white;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    }
+
+    .result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+        margin-top: 18px;
+    }
+
+    .result-item {
+        background: rgba(255,255,255,0.12);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 14px;
+        padding: 14px 16px;
+    }
+
+    .label {
+        font-size: 12px;
+        opacity: 0.85;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 4px;
+    }
+
+    .value {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    .itinerary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+    }
+
+    .itinerary-table th,
+    .itinerary-table td {
+        padding: 12px;
+        border-bottom: 1px solid #E5E7EB;
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    .itinerary-table th {
+        background: #F9FAFB;
+        color: #6B7280;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .itinerary-table tbody tr:hover {
+        background: #FCFAFF;
+    }
+
+    .error-box {
+        background: #FEE2E2;
+        color: #B91C1C;
+        border-left: 4px solid #DC2626;
+        padding: 14px 16px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .section-code {
+        margin-top: 14px;
+        background: #F8FAFC;
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 14px 16px;
+    }
+
+    .section-code summary {
+        cursor: pointer;
+        font-weight: 700;
+        color: #6D28D9;
+    }
+
+    .section-code .section-note {
+        color: #6B7280;
+        font-size: 13px;
+        margin: 10px 0 12px;
+    }
+
+    .section-code pre {
+        background: #111827;
+        color: #F9FAFB;
+        border-radius: 10px;
+        padding: 14px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 768px) {
+        .admin-shell {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+            position: static;
+        }
+
+        .result-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div class="admin-shell">
+        <aside class="sidebar">
+            <h3><i class="fas fa-bars"></i> Navigation</h3>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="{% url 'admin_itinerary' %}" class="active"><i class="fas fa-map-marked-alt"></i> Itinerary</a></li>
+                <li><a href="{% url 'admin_trips_list' %}"><i class="fas fa-suitcase"></i> Trips</a></li>
+                <li><a href="{% url 'admin_tourists_list' %}"><i class="fas fa-users"></i> Tourists</a></li>
+                <li><a href="{% url 'admin_bookings_list' %}"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+            </ul>
+        </aside>
+
+        <main class="content">
+            <h1 class="text-3xl font-bold mb-4">Generate Itinerary</h1>
+            <div class="readonly-note">
+                <i class="fas fa-lock mr-2"></i>This page is read-only and uses the live Oracle `Full_Itinerary` view.
+            </div>
+
+            <div class="panel">
+                <form method="post" class="flex flex-col md:flex-row gap-4 md:items-end">
+                    {% csrf_token %}
+                    <div class="flex-1">
+                        <label class="block text-sm font-semibold mb-2" for="tourist_id">Tourist ID</label>
+                        <input class="field" type="number" id="tourist_id" name="tourist_id" min="1" placeholder="Enter tourist ID" value="{{ request.POST.tourist_id|default:'' }}" required>
+                    </div>
+                    <button class="btn-primary" type="submit">
+                        <i class="fas fa-magic mr-2"></i>Generate
+                    </button>
+                </form>
+
+                <details class="section-code">
+                    <summary>Show Tourist Lookup SQL</summary>
+                    <div class="section-note">{{ itinerary_sections.0.note }}</div>
+                    <pre>{{ itinerary_sections.0.queries.0 }}</pre>
+                </details>
+            </div>
+
+            {% if error %}
+                <div class="error-box">
+                    <i class="fas fa-triangle-exclamation mr-2"></i>{{ error }}
+                </div>
+            {% endif %}
+
+            {% if result %}
+                <section class="result-card {% if result.region == 'North' %}region-north{% elif result.region == 'South' %}region-south{% else %}region-east{% endif %}">
+                    <div class="flex items-center justify-between gap-4">
+                        <div>
+                            <p class="text-sm uppercase tracking-widest opacity-80">Itinerary Result</p>
+                            <h2 class="text-3xl font-bold mt-1">{{ result.touristname }}</h2>
+                            <p class="opacity-90">{{ result.nationality }}</p>
+                        </div>
+                        <span class="region-badge {% if result.region == 'North' %}region-north{% elif result.region == 'South' %}region-south{% else %}region-east{% endif %}">
+                            {{ result.region }}
+                        </span>
+                    </div>
+
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <div class="label">Travel Dates</div>
+                            <div class="value">{{ result.startdate|date:"d-m-Y" }} → {{ result.enddate|date:"d-m-Y" }}</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="label">Amount</div>
+                            <div class="value">{{ result.amount }} DZD</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="label">Event</div>
+                            <div class="value">{{ result.eventname }} ({{ result.eventdate|date:"d-m-Y" }})</div>
+                        </div>
+                        <div class="result-item">
+                            <div class="label">Guide</div>
+                            <div class="value">{{ result.guidename }} - {{ result.languages }}</div>
+                        </div>
+                    </div>
+
+                    <details class="section-code" style="background: rgba(255,255,255,0.14); border-color: rgba(255,255,255,0.18);">
+                        <summary style="color: white;">Show Generated Itinerary SQL</summary>
+                        <div class="section-note" style="color: rgba(255,255,255,0.85);">{{ itinerary_sections.1.note }}</div>
+                        <pre style="background: rgba(17,24,39,0.35);">{{ itinerary_sections.1.queries.0 }}</pre>
+                    </details>
+                </section>
+            {% endif %}
+
+            <section class="panel mt-8">
+                <div class="flex items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold">Full Itinerary Table</h2>
+                        <p class="text-gray-600">All rows from the live `Full_Itinerary` view.</p>
+                    </div>
+                    <span class="text-sm text-gray-500">{{ all_itineraries|length }} rows</span>
+                </div>
+
+                <details class="section-code">
+                    <summary>Show Full Itinerary Table SQL</summary>
+                    <div class="section-note">{{ itinerary_sections.2.note }}</div>
+                    <pre>{{ itinerary_sections.2.queries.0 }}</pre>
+                </details>
+
+                {% if all_itineraries %}
+                    <div class="table-wrap">
+                        <table class="itinerary-table">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Tourist</th>
+                                    <th>Nationality</th>
+                                    <th>Region</th>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Amount</th>
+                                    <th>Event</th>
+                                    <th>Guide</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in all_itineraries %}
+                                    <tr>
+                                        <td>{{ item.bookingid }}</td>
+                                        <td>{{ item.touristname }}</td>
+                                        <td>{{ item.nationality }}</td>
+                                        <td>
+                                            <span class="region-badge {% if item.region == 'North' %}region-north{% elif item.region == 'South' %}region-south{% else %}region-east{% endif %}">
+                                                {{ item.region }}
+                                            </span>
+                                        </td>
+                                        <td>{{ item.startdate|date:"d-m-Y" }}</td>
+                                        <td>{{ item.enddate|date:"d-m-Y" }}</td>
+                                        <td>{{ item.amount }} DZD</td>
+                                        <td>{{ item.eventname }}</td>
+                                        <td>{{ item.guidename }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="empty-state mt-4">
+                        <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                        <p>No itinerary rows found.</p>
+                    </div>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</div>
+{% endblock %}

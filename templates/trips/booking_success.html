@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Confirmed - Cultural Trip Database{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto text-center">
+        <!-- Success Icon -->
+        <div class="mb-8">
+            <div class="inline-flex items-center justify-center w-24 h-24 bg-green-100 rounded-full mb-6">
+                <i class="fas fa-check text-green-600 text-5xl"></i>
+            </div>
+        </div>
+        
+        <!-- Success Message -->
+        <h1 class="text-4xl font-bold mb-4">Booking Confirmed!</h1>
+        <p class="text-xl text-gray-600 mb-8">
+            Your cultural trip booking has been successfully confirmed. 
+            You will receive a detailed confirmation email within 24 hours.
+        </p>
+        
+        <!-- Details Box -->
+        <div class="bg-white rounded-lg shadow-lg p-8 mb-8 text-left">
+            <h2 class="text-2xl font-bold mb-6">What's Next?</h2>
+            
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-semibold">Check Your Email</h3>
+                        <p class="text-gray-600">A confirmation email with your booking details has been sent to your email address.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-semibold">Complete Payment</h3>
+                        <p class="text-gray-600">Payment instructions will be provided in your confirmation email. Complete payment within 7 days to secure your spot.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-passport"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-semibold">Prepare Documents</h3>
+                        <p class="text-gray-600">Ensure your passport is valid for at least 6 months and gather any required travel documents.</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-start">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-8 w-8 rounded-full bg-green-100 text-green-600">
+                            <i class="fas fa-suitcase-rolling"></i>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-lg font-semibold">Pack Your Bags</h3>
+                        <p class="text-gray-600">A packing guide specific to your trip destination will be sent one week before departure.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="bg-purple-50 border border-purple-200 rounded-lg p-6 mb-8">
+            <h3 class="font-semibold text-purple-900 mb-3">
+                <i class="fas fa-headset mr-2"></i>Need Help?
+            </h3>
+            <p class="text-purple-800 mb-2">If you have any questions about your booking, please don't hesitate to contact us.</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center mt-4">
+                <div>
+                    <p class="text-sm text-gray-600">Email:</p>
+                    <p class="font-semibold text-purple-900">booking@culturaltrips.com</p>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-600">Phone:</p>
+                    <p class="font-semibold text-purple-900">+213 XX XXX XXXX</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col md:flex-row gap-4 justify-center">
+            <a href="{% url 'index' %}" class="bg-purple-600 text-white px-8 py-3 rounded-lg hover:bg-purple-700 transition font-semibold inline-block">
+                <i class="fas fa-home mr-2"></i>Back to Home
+            </a>
+            <a href="{% url 'trips_list' %}" class="bg-gray-600 text-white px-8 py-3 rounded-lg hover:bg-gray-700 transition font-semibold inline-block">
+                <i class="fas fa-list mr-2"></i>View Other Trips
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

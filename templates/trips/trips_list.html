@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}Trips - Cultural Trip Database{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .trip-card-modern {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .trip-card-modern:nth-child(1) { animation-delay: 0.1s; }
+    .trip-card-modern:nth-child(2) { animation-delay: 0.2s; }
+    .trip-card-modern:nth-child(3) { animation-delay: 0.3s; }
+    .trip-card-modern:nth-child(4) { animation-delay: 0.4s; }
+    .trip-card-modern:nth-child(5) { animation-delay: 0.5s; }
+    .trip-card-modern:nth-child(6) { animation-delay: 0.6s; }
+
+    .trip-card-modern {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .trip-card-modern:hover {
+        box-shadow: 0 16px 35px rgba(168, 85, 247, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .trip-header-modern {
+        background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .trip-header-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+
+    .trip-card-modern:hover .trip-header-modern::before {
+        transform: translateX(100%);
+    }
+
+    .trip-header-modern i {
+        font-size: 3.5rem;
+        color: white;
+        z-index: 2;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .trip-card-modern:hover .trip-header-modern i {
+        transform: scale(1.1);
+    }
+
+    .trip-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .trip-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .trip-card-modern:hover .trip-title {
+        color: #a855f7;
+    }
+
+    .trip-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .region-badge-purple {
+        background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+        color: #7c3aed;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: 1px solid #c4b5fd;
+        transition: all 0.3s ease;
+    }
+
+    .region-badge-purple:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+    }
+
+    .trip-id-badge-modern {
+        background: linear-gradient(135deg, #a855f7, #7c3aed);
+        color: white;
+        font-weight: bold;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .trip-id-badge-modern:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(168, 85, 247, 0.3);
+    }
+
+    .trip-dates {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        flex-wrap: wrap;
+    }
+
+    .date-item {
+        flex: 1;
+        min-width: 140px;
+        padding: 0.75rem;
+        background: #ede9fe;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+    }
+
+    .date-item:hover {
+        background: #ddd6fe;
+        transform: translateY(-2px);
+    }
+
+    .date-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #7c3aed;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.25rem;
+    }
+
+    .date-value {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #111827;
+    }
+
+    .trip-icon {
+        color: #a855f7;
+        margin-right: 0.5rem;
+        font-size: 0.75rem;
+    }
+
+    .trip-link {
+        margin-top: auto;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .trip-link a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #a855f7, #ec4899);
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .trip-link a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(168, 85, 247, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">All Trips</h1>
+        <p class="text-gray-600">Explore our complete collection of cultural trips across all regions.</p>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Filter Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <form method="get" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-sm font-semibold mb-2">Filter by Region</label>
+                <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <option value="">All Regions</option>
+                    <option value="North" {% if selected_region == 'North' %}selected{% endif %}>North</option>
+                    <option value="South" {% if selected_region == 'South' %}selected{% endif %}>South</option>
+                    <option value="East" {% if selected_region == 'East' %}selected{% endif %}>East</option>
+                </select>
+            </div>
+            <div class="flex gap-2 items-end">
+                <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+                {% if selected_region %}
+                <a href="{% url 'trips_list' %}" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-times mr-2"></i>Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+    
+    <!-- Trips Grid -->
+    {% if trips %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="trips-container">
+        {% for trip in trips %}
+        <div class="trip-card-modern">
+            <div class="trip-header-modern">
+                <i class="fas fa-suitcase-rolling" aria-label="Trip"></i>
+            </div>
+            
+            <div class="trip-content">
+                <h3 class="trip-title">Trip to {{ trip.region }}</h3>
+
+                <div class="trip-meta">
+                    <span class="region-badge-purple">
+                        <i class="fas fa-map-marker-alt mr-1"></i>{{ trip.region }}
+                    </span>
+                    <span class="trip-id-badge-modern">
+                        <i class="fas fa-hashtag"></i> {{ trip.tripid }}
+                    </span>
+                </div>
+
+                <div class="trip-dates">
+                    <div class="date-item">
+                        <div class="date-label"><i class="fas fa-calendar-alt trip-icon"></i>Start</div>
+                        <div class="date-value">{{ trip.startdate|date:'M d, Y' }}</div>
+                    </div>
+                    <div class="date-item">
+                        <div class="date-label"><i class="fas fa-calendar-check trip-icon"></i>End</div>
+                        <div class="date-value">{{ trip.enddate|date:'M d, Y' }}</div>
+                    </div>
+                </div>
+
+                <div class="trip-link">
+                    <a href="{% url 'trip_detail' trip.tripid %}">
+                        View Details <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">No Trips Found</h3>
+        <p class="text-gray-600 mb-6">There are currently no trips available for your selected criteria.</p>
+        <a href="{% url 'trips_list' %}" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition inline-block">
+            View All Trips
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.trip-card-modern');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.01)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

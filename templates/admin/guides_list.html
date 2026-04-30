@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}Guides - Admin Panel{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-list-container {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .admin-sidebar {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        height: fit-content;
+        position: sticky;
+        top: 20px;
+    }
+    
+    .admin-sidebar h3 {
+        color: #8B5CF6;
+        margin-bottom: 20px;
+        font-size: 16px;
+        border-bottom: 2px solid #8B5CF6;
+        padding-bottom: 10px;
+    }
+    
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .sidebar-menu li {
+        margin-bottom: 8px;
+    }
+    
+    .sidebar-menu a {
+        display: block;
+        padding: 10px 12px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+    
+    .sidebar-menu a:hover, .sidebar-menu a.active {
+        background: #F3E8FF;
+        color: #8B5CF6;
+        padding-left: 20px;
+    }
+    
+    .admin-content {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .content-header h1 {
+        color: #333;
+        margin: 0;
+    }
+    
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    
+    .table thead {
+        background: #F3E8FF;
+        color: #8B5CF6;
+    }
+    
+    .table th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #8B5CF6;
+    }
+    
+    .table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .table tbody tr:hover {
+        background: #F9F5FF;
+    }
+    
+    .region-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        color: white;
+    }
+    
+    .region-north { background: #3B82F6; }
+    .region-south { background: #F97316; }
+    .region-east { background: #10B981; }
+    
+    .readonly-note {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border-left: 4px solid #2563EB;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div class="admin-list-container">
+        <!-- Sidebar -->
+        <div class="admin-sidebar">
+            <h3><i class="fas fa-bars"></i> Menu</h3>
+            <ul class="sidebar-menu">
+                <li><a href="{% url 'admin_dashboard' %}"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="{% url 'admin_itinerary' %}"><i class="fas fa-map-marked-alt"></i> Itinerary</a></li>
+                <li><a href="{% url 'admin_trips_list' %}"><i class="fas fa-suitcase"></i> Trips</a></li>
+                <li><a href="{% url 'admin_tourists_list' %}"><i class="fas fa-users"></i> Tourists</a></li>
+                <li><a href="{% url 'admin_bookings_list' %}"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;">
+                    <a href="{% url 'index' %}"><i class="fas fa-home"></i> Public Site</a>
+                </li>
+                <li>
+                    <a href="{% url 'admin_logout' %}" style="color: #DC2626;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-content">
+            <div class="content-header">
+                <h1><i class="fas fa-user-tie"></i> Guides (Horizontal Fragmentation)</h1>
+            </div>
+            {% include 'partials/code_toggle.html' %}
+            
+            <p style="color: #666; font-size: 14px; margin-bottom: 20px;">
+                <i class="fas fa-info-circle"></i> Guides are horizontally fragmented by region using DB Links (north_link, south_link, east_link)
+            </p>
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div style="padding: 12px; border-radius: 5px; margin-bottom: 20px; {% if 'error' in message.tags %}background: #FEE2E2; color: #DC2626; border-left: 4px solid #DC2626;{% else %}background: #DCFCE7; color: #166534; border-left: 4px solid #16A34A;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if guides %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Guide ID</th>
+                            <th>Name</th>
+                            <th>Region</th>
+                            <th>Languages</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for guide in guides %}
+                        <tr>
+                            <td><strong>{{ guide.guideid }}</strong></td>
+                            <td>{{ guide.name }}</td>
+                            <td>
+                                {% if guide.region == 'North' %}
+                                    <span class="region-badge region-north">{{ guide.region }}</span>
+                                {% elif guide.region == 'South' %}
+                                    <span class="region-badge region-south">{{ guide.region }}</span>
+                                {% else %}
+                                    <span class="region-badge region-east">{{ guide.region }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ guide.languages|default:"-" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div style="text-align: center; padding: 40px; color: #999;">
+                    <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                    <p>No guides found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,309 @@
+{% extends "base.html" %}
+
+{% block title %}Guides - Cultural Trip Database{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .guide-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .guide-card:nth-child(1) { animation-delay: 0.1s; }
+    .guide-card:nth-child(2) { animation-delay: 0.2s; }
+    .guide-card:nth-child(3) { animation-delay: 0.3s; }
+    .guide-card:nth-child(4) { animation-delay: 0.4s; }
+    .guide-card:nth-child(5) { animation-delay: 0.5s; }
+    .guide-card:nth-child(6) { animation-delay: 0.6s; }
+
+    .guide-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .guide-card:hover {
+        box-shadow: 0 16px 35px rgba(34, 197, 94, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .guide-header {
+        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        background-size: cover;
+        background-position: center;
+        padding: 2rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        min-height: 200px;
+    }
+
+    .guide-header::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        z-index: 1;
+    }
+
+    .guide-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 0;
+    }
+
+    .guide-card:hover .guide-header::before {
+        transform: translateX(100%);
+    }
+
+    .guide-avatar {
+        font-size: 4rem;
+        color: white;
+        font-weight: bold;
+        z-index: 2;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease;
+        font-family: 'Arial', sans-serif;
+    }
+
+    .guide-card:hover .guide-avatar {
+        transform: scale(1.15);
+    }
+
+    .guide-name {
+        color: white;
+        text-align: center;
+        font-size: 1.25rem;
+        font-weight: 700;
+        z-index: 2;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .guide-content {
+        padding: 1.5rem;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .guide-meta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        flex-wrap: wrap;
+    }
+
+    .region-badge-green {
+        background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+        color: #16a34a;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        border: 1px solid #86efac;
+        transition: all 0.3s ease;
+    }
+
+    .region-badge-green:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .guide-id-badge {
+        background: linear-gradient(135deg, #22c55e, #15803d);
+        color: white;
+        font-weight: bold;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .guide-id-badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(34, 197, 94, 0.3);
+    }
+
+    .guide-detail {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem;
+        transition: all 0.2s ease;
+        background: rgba(34, 197, 94, 0.05);
+        border-radius: 8px;
+        border-left: 4px solid #22c55e;
+    }
+
+    .guide-detail:hover {
+        color: #22c55e;
+        transform: translateX(4px);
+        background: rgba(34, 197, 94, 0.1);
+    }
+
+    .guide-detail i {
+        color: #22c55e;
+        margin-right: 1rem;
+        min-width: 24px;
+        margin-top: 0.125rem;
+        font-size: 1.25rem;
+    }
+
+    .guide-detail-label {
+        font-weight: 700;
+        color: #374151;
+        margin-right: 0.75rem;
+        font-size: 1rem;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .guide-detail-value {
+        color: #22c55e;
+        font-weight: 600;
+        font-size: 1.125rem;
+        display: block;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Expert Guides</h1>
+        <p class="text-gray-600">Meet our experienced and knowledgeable guides who will lead your journey.</p>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Filter Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <form method="get" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-sm font-semibold mb-2">Filter by Region</label>
+                <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-600">
+                    <option value="">All Regions</option>
+                    <option value="North" {% if selected_region == 'North' %}selected{% endif %}>North</option>
+                    <option value="South" {% if selected_region == 'South' %}selected{% endif %}>South</option>
+                    <option value="East" {% if selected_region == 'East' %}selected{% endif %}>East</option>
+                </select>
+            </div>
+            <div class="flex gap-2 items-end">
+                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+                {% if selected_region %}
+                <a href="{% url 'guides_list' %}" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-times mr-2"></i>Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+    
+    <!-- Guides Grid -->
+    {% if guides %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="guides-container">
+        {% for guide in guides %}
+        <div class="guide-card">
+            <div class="guide-header">
+                <div class="guide-avatar">{{ guide.name|first }}</div>
+                <div class="guide-name">{{ guide.name }}</div>
+            </div>
+            
+            <div class="guide-content">
+                <div class="guide-meta">
+                    <span class="region-badge-green">
+                        <i class="fas fa-map-marker-alt mr-1"></i>{{ guide.region }}
+                    </span>
+                    <span class="guide-id-badge">
+                        <i class="fas fa-hashtag"></i> {{ guide.guideid }}
+                    </span>
+                </div>
+
+                <div class="guide-detail">
+                    <i class="fas fa-globe"></i>
+                    <div class="flex-1">
+                        <span class="guide-detail-label">Languages:</span>
+                        <span class="guide-detail-value">{{ guide.languages }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">No Guides Found</h3>
+        <p class="text-gray-600 mb-6">There are no guides available for your selected region.</p>
+        <a href="{% url 'guides_list' %}" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition inline-block">
+            View All Guides
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // List of guide images
+    const guideImages = [
+        '/static/images/guides/q.PNG'
+    ];
+
+    // Get random image from array
+    function getRandomImage() {
+        return guideImages[Math.floor(Math.random() * guideImages.length)];
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.guide-card');
+        
+        cards.forEach(card => {
+            // Set random background image to header
+            const header = card.querySelector('.guide-header');
+            if (header) {
+                header.style.backgroundImage = `url('${getRandomImage()}')`;
+            }
+
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.01)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

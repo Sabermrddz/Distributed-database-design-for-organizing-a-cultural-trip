@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% block title %}Events - Cultural Trip Database{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes scaleHover {
+        from {
+            transform: scale(1);
+        }
+        to {
+            transform: scale(1.02);
+        }
+    }
+
+    .event-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .event-card:nth-child(1) { animation-delay: 0.1s; }
+    .event-card:nth-child(2) { animation-delay: 0.2s; }
+    .event-card:nth-child(3) { animation-delay: 0.3s; }
+    .event-card:nth-child(4) { animation-delay: 0.4s; }
+    .event-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .event-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+
+    .event-card:hover {
+        box-shadow: 0 16px 35px rgba(220, 38, 38, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .event-date-box {
+        background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+        min-width: 120px;
+    }
+
+    .event-date-box:hover {
+        background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    }
+
+    .event-content {
+        position: relative;
+    }
+
+    .event-content::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #dc2626, #f97316, #dc2626);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .event-card:hover .event-content::before {
+        opacity: 1;
+    }
+
+    .event-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .event-badge:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .event-id-badge {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        color: white;
+        font-weight: bold;
+        font-size: 1.125rem;
+        padding: 0.75rem 1.25rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .event-id-badge:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
+    }
+
+    .event-title {
+        color: #111827;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        transition: color 0.3s ease;
+    }
+
+    .event-card:hover .event-title {
+        color: #dc2626;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Cultural Events</h1>
+        <p class="text-gray-600">Discover the festivals and cultural events happening in each region.</p>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Filter Section -->
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <form method="get" class="flex flex-col md:flex-row gap-4">
+            <div class="flex-1">
+                <label class="block text-sm font-semibold mb-2">Filter by Region</label>
+                <select name="region" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    <option value="">All Regions</option>
+                    <option value="North" {% if selected_region == 'North' %}selected{% endif %}>North</option>
+                    <option value="South" {% if selected_region == 'South' %}selected{% endif %}>South</option>
+                    <option value="East" {% if selected_region == 'East' %}selected{% endif %}>East</option>
+                </select>
+            </div>
+            <div class="flex gap-2 items-end">
+                <button type="submit" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition">
+                    <i class="fas fa-filter mr-2"></i>Filter
+                </button>
+                {% if selected_region %}
+                <a href="{% url 'events_list' %}" class="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition">
+                    <i class="fas fa-times mr-2"></i>Clear
+                </a>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+    
+    <!-- Events List -->
+    {% if events %}
+    <div class="space-y-6" id="events-container">
+        {% for event in events %}
+        <div class="event-card">
+            <div class="flex flex-col md:flex-row">
+                <!-- Date Box -->
+                <div class="event-date-box flex items-center justify-center p-6 text-white flex-shrink-0">
+                    <div class="text-center">
+                        <div class="text-5xl font-black">{{ event.eventdate|date:'d' }}</div>
+                        <div class="text-sm font-semibold uppercase tracking-wide">{{ event.eventdate|date:'M' }}</div>
+                        <div class="text-xs font-medium opacity-90 mt-1">{{ event.eventdate|date:'Y' }}</div>
+                    </div>
+                </div>
+                
+                <!-- Event Content -->
+                <div class="event-content flex-1 p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div class="flex-1">
+                            <h3 class="event-title">{{ event.name }}</h3>
+                            <div class="flex gap-3 flex-wrap">
+                                <span class="event-badge bg-red-100 text-red-800">
+                                    <i class="fas fa-music mr-2"></i>{{ event.type }}
+                                </span>
+                                <span class="event-badge bg-purple-100 text-purple-800">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>{{ event.region }} Region
+                                </span>
+                            </div>
+                        </div>
+                        <div class="event-id-badge">
+                            <i class="fas fa-hashtag mr-2"></i>{{ event.eventid }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+        <i class="fas fa-inbox text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-2xl font-bold text-gray-800 mb-2">No Events Found</h3>
+        <p class="text-gray-600 mb-6">There are no events scheduled for your selected criteria.</p>
+        <a href="{% url 'events_list' %}" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition inline-block">
+            View All Events
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+    // Add smooth scroll behavior
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.event-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.01)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    });
+</script>
+{% endblock %}

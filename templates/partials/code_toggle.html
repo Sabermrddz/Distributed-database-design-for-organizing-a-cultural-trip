@@ -1,0 +1,21 @@
+{% if query_info %}
+<details class="bg-white border border-gray-200 rounded-xl shadow-sm p-4 mb-6">
+    <summary class="cursor-pointer text-sm font-semibold text-purple-700 hover:text-purple-900">
+        Show {{ query_info.title }} code
+    </summary>
+    <div class="mt-4">
+        <p class="text-sm text-gray-600 mb-4">{{ query_info.note }}</p>
+        <div class="flex items-center justify-between mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold {% if query_info.fallback %}bg-amber-100 text-amber-800{% else %}bg-emerald-100 text-emerald-800{% endif %}">
+                {% if query_info.fallback %}Sample Fallback{% else %}Live Oracle{% endif %}
+            </span>
+        </div>
+        {% for query in query_info.queries %}
+        <div class="mb-4 last:mb-0">
+            <div class="text-xs uppercase tracking-wider text-gray-500 mb-2">Query {{ forloop.counter }}</div>
+            <pre class="bg-gray-950 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm whitespace-pre-wrap">{{ query }}</pre>
+        </div>
+        {% endfor %}
+    </div>
+</details>
+{% endif %}

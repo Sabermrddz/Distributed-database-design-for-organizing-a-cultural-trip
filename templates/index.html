@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Cultural Trips - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="gradient-bg text-white py-20">
+    <div class="container mx-auto px-4 text-center">
+        <h1 class="text-5xl font-bold mb-6">Discover Authentic Cultural Experiences</h1>
+        <p class="text-xl mb-8 max-w-2xl mx-auto">Explore the rich heritage and traditions of North, South, and East regions with our carefully curated trips.</p>
+        <a href="{% url 'trips_list' %}" class="bg-white text-purple-600 px-8 py-3 rounded-lg font-bold hover:bg-gray-100 transition inline-block">
+            <i class="fas fa-search mr-2"></i>Explore Trips
+        </a>
+    </div>
+</section>
+
+<!-- Featured Trips -->
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-12">Featured Trips</h2>
+        {% include 'partials/query_info.html' %}
+        
+        {% if trips %}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {% for trip in trips|slice:":6" %}
+            <div class="trip-card bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 h-48 flex items-center justify-center">
+                    <i class="fas fa-mountain text-white text-6xl"></i>
+                </div>
+                
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">{{ trip.region }}</span>
+                        <span class="text-gray-600 text-sm"><i class="fas fa-calendar mr-1"></i>{{ trip.startdate|date:'M d' }}</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">Trip #{{ trip.tripid }}</h3>
+                    <p class="text-gray-600 text-sm mb-4">Explore the cultural heritage and natural beauty of the {{ trip.region|lower }} region.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-600 text-sm">
+                            <i class="fas fa-clock mr-1"></i>10 days
+                        </span>
+                        <a href="{% url 'trip_detail' trip.tripid %}" class="text-purple-600 font-semibold hover:text-purple-800 transition">
+                            View Details <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="bg-white rounded-lg shadow-md p-8 text-center">
+            <p class="text-gray-600">No trips available at the moment.</p>
+        </div>
+        {% endif %}
+        
+        <div class="text-center mt-12">
+            <a href="{% url 'trips_list' %}" class="bg-purple-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-purple-700 transition inline-block">
+                View All Trips
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Regions Section -->
+<section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-12">Explore by Region</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- North -->
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+                <div class="bg-blue-500 h-32 flex items-center justify-center">
+                    <i class="fas fa-compass text-white text-5xl"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-2 text-blue-900">North Region</h3>
+                    <p class="text-gray-700 mb-4">Discover ancient Timgad, majestic mountain landscapes, and vibrant Berber culture.</p>
+                    <a href="{% url 'trips_list' %}?region=North" class="text-blue-600 font-semibold hover:text-blue-800 transition">
+                        Explore North <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- South -->
+            <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+                <div class="bg-orange-500 h-32 flex items-center justify-center">
+                    <i class="fas fa-sun text-white text-5xl"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-2 text-orange-900">South Region</h3>
+                    <p class="text-gray-700 mb-4">Experience the Sahara Desert, traditional Tuareg heritage, and stunning oasis landscapes.</p>
+                    <a href="{% url 'trips_list' %}?region=South" class="text-orange-600 font-semibold hover:text-orange-800 transition">
+                        Explore South <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- East -->
+            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition">
+                <div class="bg-green-500 h-32 flex items-center justify-center">
+                    <i class="fas fa-leaf text-white text-5xl"></i>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-2 text-green-900">East Region</h3>
+                    <p class="text-gray-700 mb-4">Enjoy Mediterranean beaches, historic sites, and authentic local cuisine.</p>
+                    <a href="{% url 'trips_list' %}?region=East" class="text-green-600 font-semibold hover:text-green-800 transition">
+                        Explore East <i class="fas fa-arrow-right ml-1"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

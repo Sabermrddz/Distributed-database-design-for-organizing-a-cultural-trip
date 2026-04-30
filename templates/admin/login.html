@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Login - Cultural Trips{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .login-box {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        padding: 40px;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .login-box h2 {
+        color: #8B5CF6;
+        margin-bottom: 30px;
+        text-align: center;
+        font-size: 24px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+    }
+    
+    .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+        transition: border-color 0.3s;
+    }
+    
+    .form-group input:focus {
+        outline: none;
+        border-color: #8B5CF6;
+        box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+    }
+    
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        background: #8B5CF6;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    
+    .btn-login:hover {
+        background: #7C3AED;
+    }
+    
+    .error-message {
+        background: #FEE2E2;
+        color: #DC2626;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border-left: 4px solid #DC2626;
+    }
+    
+    .private-message {
+        background: #F3F4F6;
+        color: #374151;
+        padding: 12px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        border-left: 4px solid #6B7280;
+        font-size: 13px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="login-box">
+        <h2>
+            <i class="fas fa-lock"></i> Admin Login
+        </h2>
+        
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'error' in message.tags %}
+                    <div class="error-message">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        <div class="private-message">
+            <i class="fas fa-shield-alt"></i> Private admin access. Please sign in with your authorized credentials.
+        </div>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="username">
+                    <i class="fas fa-user"></i> Username
+                </label>
+                <input type="text" id="username" name="username" required placeholder="Enter your username" autofocus>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-key"></i> Password
+                </label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            
+            <button type="submit" class="btn-login">
+                <i class="fas fa-sign-in-alt mr-2"></i> Login
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="{% url 'index' %}" style="color: #8B5CF6; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - Cultural Trips Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-list-container {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .admin-list-content {
+        background: white;
+        border-radius: 10px;
+        padding:30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .admin-list-content h1 {
+        color: #333;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .list-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .list-table thead {
+        background: #F3E8FF;
+        color: #8B5CF6;
+    }
+    
+    .list-table th {
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #8B5CF6;
+    }
+    
+    .list-table td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .list-table tbody tr:hover {
+        background: #F9F5FF;
+    }
+    
+    .region-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .region-badge.North {
+        background: #DBEAFE;
+        color: #1E40AF;
+    }
+    
+    .region-badge.South {
+        background: #FED7AA;
+        color: #92400E;
+    }
+    
+    .region-badge.East {
+        background: #DCFCE7;
+        color: #166534;
+    }
+    
+    .readonly-note {
+        background: #EFF6FF;
+        color: #1D4ED8;
+        border-left: 4px solid #2563EB;
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .filter-bar {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .filter-bar select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: white;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 20px; margin-top: 20px;">
+        <!-- Sidebar -->
+        <div style="background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; position: sticky; top: 20px;">
+            <h3 style="color: #8B5CF6; margin-bottom: 20px; font-size: 16px; border-bottom: 2px solid #8B5CF6; padding-bottom: 10px;">
+                <i class="fas fa-bars"></i> Navigation
+            </h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_dashboard' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_itinerary' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-map-marked-alt"></i> Itinerary</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_trips_list' %}" style="display: block; padding: 10px 12px; color: #333; background: #F3E8FF; color: #8B5CF6; border-radius: 5px; text-decoration: none; padding-left: 20px;"><i class="fas fa-suitcase"></i> Trips</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_tourists_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-users"></i> Tourists</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_bookings_list' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-ticket-alt"></i> Bookings</a></li>
+                <li style="margin-top: 20px; border-top: 1px solid #eee; padding-top: 20px;"><a href="{% url 'index' %}" style="display: block; padding: 10px 12px; color: #333; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#F3E8FF'; this.style.color='#8B5CF6'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.color='#333'; this.style.paddingLeft='12px';"><i class="fas fa-home"></i> Public Site</a></li>
+                <li style="margin-bottom: 8px;"><a href="{% url 'admin_logout' %}" style="display: block; padding: 10px 12px; color: #DC2626; text-decoration: none; border-radius: 5px; transition: all 0.3s;" onmouseover="this.style.background='#FEE2E2'; this.style.paddingLeft='20px';" onmouseout="this.style.background=''; this.style.paddingLeft='12px';"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="admin-list-content">
+            <h1>
+                <span>
+                    {% if 'Trip' in page_title %}<i class="fas fa-suitcase"></i>{% endif %}
+                    {% if 'Tourist' in page_title %}<i class="fas fa-users"></i>{% endif %}
+                    {% if 'Booking' in page_title %}<i class="fas fa-ticket-alt"></i>{% endif %}
+                    {{ page_title }}
+                </span>
+            </h1>
+            {% include 'partials/code_toggle.html' %}
+            
+            {% if messages %}
+                {% for message in messages %}
+                    <div style="padding: 12px; border-radius: 5px; margin-bottom: 20px; {% if 'error' in message.tags %}background: #FEE2E2; color: #DC2626; border-left: 4px solid #DC2626;{% else %}background: #DCFCE7; color: #166534; border-left: 4px solid #16A34A;{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            {% if items %}
+                <table class="list-table">
+                    <thead>
+                        <tr>
+                            {% for header in headers %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                            <tr>
+                                {% for key in columns %}
+                                    <td>
+                                        {% if key == 'region' %}
+                                            <span class="region-badge {{ item|dict_lookup:key }}">{{ item|dict_lookup:key }}</span>
+                                        {% else %}
+                                            {{ item|dict_lookup:key|truncatewords:10 }}
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-inbox" style="font-size: 48px; color: #ddd; margin-bottom: 20px;"></i>
+                    <p>No items found</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Custom filter for dict lookups -->
+<script>
+    // This template needs a custom template filter because Django doesn't support dict lookups in templates
+    // Will need to convert items to use attribute access instead
+</script>
+{% endblock %}

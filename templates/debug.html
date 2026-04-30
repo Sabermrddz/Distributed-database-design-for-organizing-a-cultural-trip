@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Debug - Environment Check{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1>🔧 Debug: Environment Variables</h1>
+    
+    <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+        <h2>Loaded .env Values:</h2>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto;">
+{{ debug_info }}
+        </pre>
+    </div>
+    
+    <div style="background: white; padding: 20px; border-radius: 10px; margin-top: 20px;">
+        <h2>Test Connection:</h2>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto;">
+{{ connection_test }}
+        </pre>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cultural Trip Database{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .trip-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .trip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-globe text-2xl"></i>
+                    <a href="{% url 'index' %}" class="text-2xl font-bold">Cultural Trips</a>
+                </div>
+                
+                <div class="hidden md:flex space-x-6 items-center">
+                    <a href="{% url 'index' %}" class="hover:text-gray-200 transition">Home</a>
+                    <a href="{% url 'trips_list' %}" class="hover:text-gray-200 transition">Trips</a>
+                    <a href="{% url 'guides_list' %}" class="hover:text-gray-200 transition">Guides</a>
+                    <a href="{% url 'accommodations_list' %}" class="hover:text-gray-200 transition">Hotels</a>
+                    <a href="{% url 'events_list' %}" class="hover:text-gray-200 transition">Events</a>
+                    
+                    <!-- Admin Links -->
+                    {% if request.session.is_admin %}
+                        <div class="border-l border-white pl-6 ml-6">
+                            <a href="{% url 'admin_dashboard' %}" class="bg-purple-500 text-white px-3 py-2 rounded hover:bg-purple-600 transition">
+                                <i class="fas fa-cog mr-2"></i>Admin Panel
+                            </a>
+                            <a href="{% url 'admin_logout' %}" class="text-red-300 hover:text-red-100 ml-2 transition">
+                                <i class="fas fa-sign-out-alt"></i>Logout
+                            </a>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'admin_login' %}" class="bg-gray-700 text-white px-3 py-2 rounded text-sm hover:bg-gray-600 transition">
+                            <i class="fas fa-lock mr-1"></i>Admin
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Mobile menu button -->
+                <button class="md:hidden text-white" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mx-auto px-4 mt-4">
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags %}{{ message.tags }}{% endif %} p-4 mb-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+            <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %} mr-2"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-200 mt-16">
+        <div class="container mx-auto px-4 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-white font-bold mb-4">About Us</h3>
+                    <p class="text-sm">Explore beautiful cultural destinations across North, South, and East regions.</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-bold mb-4">Quick Links</h3>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="{% url 'index' %}" class="hover:text-white transition">Home</a></li>
+                        <li><a href="{% url 'trips_list' %}" class="hover:text-white transition">Trips</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-bold mb-4">Regions</h3>
+                    <ul class="text-sm space-y-2">
+                        <li><a href="{% url 'trips_list' %}?region=North" class="hover:text-white transition">North</a></li>
+                        <li><a href="{% url 'trips_list' %}?region=South" class="hover:text-white transition">South</a></li>
+                        <li><a href="{% url 'trips_list' %}?region=East" class="hover:text-white transition">East</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-bold mb-4">Architecture</h3>
+                    <p class="text-sm"><i class="fas fa-cube mr-1 text-purple-400"></i><strong>Lab2 Project</strong></p>
+                    <p class="text-xs text-gray-400 mt-2">Distributed Database System with Central Droplet connected to 3 Regional Databases (North, South, East)</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2026 Cultural Trip Database Lab2 Project. All rights reserved.</p>
+                <p class="text-xs text-gray-500 mt-2">
+                    <i class="fas fa-code-branch mr-1"></i>Distributed Database Architecture: Central Droplet ↔ 3 Regional Databases (North, South, East) powered by Oracle XE 21c
+                </p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        function toggleMobileMenu() {
+            const menu = document.querySelector('.md\:flex');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{% static 'js/app.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

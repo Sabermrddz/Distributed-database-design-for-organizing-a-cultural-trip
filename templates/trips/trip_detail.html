@@ -1,0 +1,519 @@
+{% extends "base.html" %}
+
+{% block title %}Trip Details - Cultural Trip Database{% endblock %}
+
+{% block extra_css %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .detail-card {
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    .detail-card:nth-child(1) { animation-delay: 0.1s; }
+    .detail-card:nth-child(2) { animation-delay: 0.2s; }
+    .detail-card:nth-child(3) { animation-delay: 0.3s; }
+    .detail-card:nth-child(4) { animation-delay: 0.4s; }
+    .detail-card:nth-child(5) { animation-delay: 0.5s; }
+
+    .detail-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+    }
+
+    .detail-card:hover {
+        box-shadow: 0 16px 35px rgba(168, 85, 247, 0.15);
+        transform: translateY(-8px);
+    }
+
+    .schedule-card {
+        padding: 2rem;
+    }
+
+    .schedule-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: #111827;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .schedule-card i {
+        color: #a855f7;
+        font-size: 1.75rem;
+    }
+
+    .date-section {
+        padding: 1.5rem;
+        background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .date-section:hover {
+        transform: translateX(4px);
+        background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+    }
+
+    .date-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #7c3aed;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+    }
+
+    .date-value {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: #a855f7;
+        margin-bottom: 0.25rem;
+    }
+
+    .date-year {
+        font-size: 0.875rem;
+        color: #7c3aed;
+        font-weight: 500;
+    }
+
+    .accommodation-card {
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .accommodation-header {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        background-size: cover;
+        background-position: center;
+        height: 140px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+
+    .accommodation-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(30, 64, 175, 0.5);
+        z-index: 1;
+    }
+
+    .accommodation-header i {
+        font-size: 3rem;
+        color: white;
+        transition: transform 0.3s ease;
+        filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.2));
+        position: relative;
+        z-index: 2;
+    }
+
+    .accommodation-card:hover .accommodation-header i {
+        transform: scale(1.1);
+    }
+
+    .accommodation-content {
+        padding: 1.5rem;
+    }
+
+    .accommodation-name {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.75rem;
+        transition: color 0.3s ease;
+    }
+
+    .accommodation-card:hover .accommodation-name {
+        color: #3b82f6;
+    }
+
+    .accommodation-rating {
+        display: flex;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .star { color: #fbbf24; }
+    .rating-text {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .guide-card {
+        padding: 1.5rem;
+    }
+
+    .guide-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .guide-avatar {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.75rem;
+        transition: transform 0.3s ease;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+    }
+
+    .guide-card:hover .guide-avatar {
+        transform: scale(1.1);
+    }
+
+    .guide-info {
+        margin-left: 1rem;
+        flex-grow: 1;
+    }
+
+    .guide-name {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.25rem;
+    }
+
+    .guide-id {
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    .guide-languages {
+        background: #f0fdf4;
+        border-left: 4px solid #22c55e;
+        padding: 1rem;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .guide-card:hover .guide-languages {
+        background: #dcfce7;
+        transform: translateX(4px);
+    }
+
+    .guide-languages i {
+        color: #22c55e;
+        margin-right: 0.75rem;
+    }
+
+    .guide-languages-text {
+        font-weight: 600;
+        color: #16a34a;
+        font-size: 0.95rem;
+    }
+
+    .event-card {
+        padding: 1.5rem;
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+
+    .event-icon-box {
+        background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+        padding: 1rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 60px;
+        height: 60px;
+        transition: all 0.3s ease;
+    }
+
+    .event-card:hover .event-icon-box {
+        background: linear-gradient(135deg, #c4b5fd, #a78bfa);
+        transform: scale(1.1);
+    }
+
+    .event-icon-box i {
+        font-size: 1.75rem;
+        color: #a855f7;
+    }
+
+    .event-content {
+        flex-grow: 1;
+    }
+
+    .event-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 0.75rem;
+        transition: color 0.3s ease;
+    }
+
+    .event-card:hover .event-title {
+        color: #a855f7;
+    }
+
+    .event-type {
+        display: inline-block;
+        background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+        color: #7c3aed;
+        padding: 0.4rem 0.8rem;
+        border-radius: 16px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .event-card:hover .event-type {
+        background: linear-gradient(135deg, #ddd6fe, #c4b5fd);
+        transform: translateY(-2px);
+    }
+
+    .event-date {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin-top: 0.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .section-title i {
+        font-size: 2rem;
+        background: linear-gradient(135deg, #a855f7, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .empty-message {
+        background: #f3f4f6;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
+        border: 2px dashed #d1d5db;
+    }
+
+    .empty-message i {
+        font-size: 3rem;
+        color: #9ca3af;
+        margin-bottom: 1rem;
+    }
+
+    .empty-message p {
+        color: #6b7280;
+        font-size: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <!-- Breadcrumb -->
+    <nav class="mb-8">
+        <a href="{% url 'trips_list' %}" class="text-purple-600 hover:text-purple-800 font-semibold transition">
+            <i class="fas fa-chevron-left mr-1"></i>Back to Trips
+        </a>
+    </nav>
+    
+    <!-- Trip Header -->
+    <div class="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg shadow-lg p-8 mb-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <p class="text-purple-200 text-sm font-semibold mb-2">TRIP ID</p>
+                <h1 class="text-4xl font-bold">{{ trip.tripid }}</h1>
+            </div>
+            
+            <div>
+                <p class="text-purple-200 text-sm font-semibold mb-2">REGION</p>
+                <p class="text-3xl font-bold">{{ trip.region }}</p>
+            </div>
+            
+            <div>
+                <p class="text-purple-200 text-sm font-semibold mb-2">DURATION</p>
+                <p class="text-3xl font-bold">{{ duration_text }}</p>
+            </div>
+        </div>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Main Content -->
+    <div class="mb-12">
+        <!-- Trip Schedule -->
+        <h2 class="section-title"><i class="fas fa-calendar-days"></i>Trip Schedule</h2>
+        <div class="detail-card schedule-card" id="schedule-card">
+            <h3><i class="fas fa-clock"></i>Travel Dates</h3>
+            <div class="space-y-2">
+                <div class="date-section">
+                    <div class="date-label"><i class="fas fa-play-circle mr-1"></i>Start Date</div>
+                    <div class="date-value">{{ trip.startdate|date:'M d' }}</div>
+                    <div class="date-year">{{ trip.startdate|date:'F Y' }}</div>
+                </div>
+                <div class="date-section">
+                    <div class="date-label"><i class="fas fa-stop-circle mr-1"></i>End Date</div>
+                    <div class="date-value">{{ trip.enddate|date:'M d' }}</div>
+                    <div class="date-year">{{ trip.enddate|date:'F Y' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Accommodations Section -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-bed"></i>Where You'll Stay</h2>
+        {% if accommodations %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="accommodations-container">
+            {% for acc in accommodations %}
+            <div class="detail-card accommodation-card">
+                <div class="accommodation-header">
+                    <i class="fas fa-hotel"></i>
+                </div>
+                <div class="accommodation-content">
+                    <h3 class="accommodation-name">{{ acc.name }}</h3>
+                    <div class="accommodation-rating">
+                        {% for i in "x"|rjust:"5" %}
+                            {% if forloop.counter <= acc.rating %}
+                                <i class="fas fa-star star"></i>
+                            {% else %}
+                                <i class="far fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="rating-text">
+                        <strong>Rating:</strong> {{ acc.rating|floatformat:1 }}/5.0
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-message">
+            <i class="fas fa-inbox"></i>
+            <p>No accommodations listed for this trip.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Guides Section -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-user-tie"></i>Your Guides</h2>
+        {% if guides %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="guides-container">
+            {% for guide in guides %}
+            <div class="detail-card guide-card">
+                <div class="guide-header">
+                    <div class="guide-avatar">{{ guide.name|first }}</div>
+                    <div class="guide-info">
+                        <div class="guide-name">{{ guide.name }}</div>
+                        <div class="guide-id">Guide #{{ guide.guideid }}</div>
+                    </div>
+                </div>
+                <div class="guide-languages">
+                    <i class="fas fa-globe"></i>
+                    <span class="guide-languages-text">{{ guide.languages }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-message">
+            <i class="fas fa-inbox"></i>
+            <p>No guides assigned to this trip.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Events Section -->
+    <div class="mb-12">
+        <h2 class="section-title"><i class="fas fa-star"></i>Cultural Events</h2>
+        {% if events %}
+        <div class="space-y-4" id="events-container">
+            {% for event in events %}
+            <div class="detail-card event-card">
+                <div class="event-icon-box">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">{{ event.name }}</h3>
+                    <span class="event-type">{{ event.type }}</span>
+                    <div class="event-date">
+                        <i class="fas fa-clock mr-1"></i>{{ event.eventdate|date:'F d, Y' }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-message">
+            <i class="fas fa-inbox"></i>
+            <p>No events scheduled for this trip.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const cards = document.querySelectorAll('.detail-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Assign random hotel background images
+        const hotelImages = [
+            '/static/images/hotels/brett-campbell-k1OlQaEK2qI-unsplash.jpg',
+            '/static/images/hotels/ciudad-maderas-MXbM1NrRqtI-unsplash.jpg',
+            '/static/images/hotels/sara-dubler-Koei_7yYtIo-unsplash.jpg',
+            '/static/images/hotels/sidath-vimukthi-xZKEqleFdnk-unsplash.jpg',
+            '/static/images/hotels/the-anam-_twiIcIsp2s-unsplash.jpg',
+            '/static/images/hotels/valeriia-bugaiova-_pPHgeHz1uk-unsplash.jpg'
+        ];
+        
+        const accommodationHeaders = document.querySelectorAll('.accommodation-header');
+        accommodationHeaders.forEach(header => {
+            const randomImage = hotelImages[Math.floor(Math.random() * hotelImages.length)];
+            header.style.backgroundImage = `url('${randomImage}')`;
+        });
+    });
+</script>
+{% endblock %}

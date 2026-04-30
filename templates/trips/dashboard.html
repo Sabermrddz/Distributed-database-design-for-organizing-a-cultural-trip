@@ -1,0 +1,147 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Cultural Trip Database{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">Admin Dashboard</h1>
+        <p class="text-gray-600">Overview of system statistics and key metrics.</p>
+    </div>
+    {% include 'partials/query_info.html' %}
+    
+    <!-- Statistics Cards -->
+    {% if error %}
+    <div class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-8">
+        <i class="fas fa-exclamation-triangle mr-2"></i>
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+    
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+        <!-- Total Bookings -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Total Bookings</p>
+                    <p class="text-4xl font-bold text-blue-600">{{ bookings_count }}</p>
+                </div>
+                <div class="bg-blue-100 rounded-full p-4 text-blue-600 text-2xl">
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Tourists -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Total Tourists</p>
+                    <p class="text-4xl font-bold text-green-600">{{ tourists_count }}</p>
+                </div>
+                <div class="bg-green-100 rounded-full p-4 text-green-600 text-2xl">
+                    <i class="fas fa-users"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Total Regions -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Active Regions</p>
+                    <p class="text-4xl font-bold text-purple-600">3</p>
+                </div>
+                <div class="bg-purple-100 rounded-full p-4 text-purple-600 text-2xl">
+                    <i class="fas fa-globe"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Database Status -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-600 text-sm font-semibold mb-2">Database Status</p>
+                    <p class="text-lg font-bold text-green-600">
+                        <i class="fas fa-check-circle mr-1"></i>Connected
+                    </p>
+                </div>
+                <div class="bg-green-100 rounded-full p-4 text-green-600 text-2xl">
+                    <i class="fas fa-database"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <!-- Trips by Region -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6">Trips by Region</h2>
+            {% if trips_by_region %}
+            <div class="space-y-4">
+                {% for region_data in trips_by_region %}
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">{{ region_data.region }}</span>
+                        <span class="text-purple-600 font-bold">{{ region_data.cnt }} trips</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-purple-600 h-2 rounded-full" style="width: {% widthratio region_data.cnt 10 100 %}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-600">No trip data available.</p>
+            {% endif %}
+        </div>
+        
+        <!-- Guides by Region -->
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <h2 class="text-2xl font-bold mb-6">Guides by Region</h2>
+            {% if guides_by_region %}
+            <div class="space-y-4">
+                {% for region_data in guides_by_region %}
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">{{ region_data.region }}</span>
+                        <span class="text-green-600 font-bold">{{ region_data.cnt }} guides</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="bg-green-600 h-2 rounded-full" style="width: {% widthratio region_data.cnt 10 100 %}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-600">No guide data available.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- System Info -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-2xl font-bold mb-6">System Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Database Type</p>
+                <p class="font-semibold">Oracle XE 21c (Distributed)</p>
+            </div>
+            <div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Framework</p>
+                <p class="font-semibold">Django 4.2</p>
+            </div>
+            <div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Database Nodes</p>
+                <p class="font-semibold">4 (1 Central + 3 Regional)</p>
+            </div>
+            <div>
+                <p class="text-gray-600 text-sm font-semibold mb-1">Fragmentation Strategy</p>
+                <p class="font-semibold">Horizontal + Vertical + Mixed</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
